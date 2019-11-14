@@ -46,7 +46,7 @@ class Homepage extends StatelessWidget{
             Row(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(left: 50.0, top: 20.0, right: 40.0),
+                  margin: EdgeInsets.only(left: 45.0, top: 20.0),
                   padding: EdgeInsets.all(10.0),
                   height: 40,
                   width: 50,
@@ -56,7 +56,7 @@ class Homepage extends StatelessWidget{
                   child: Icon(Icons.android),
                   ),
                 Container(
-                  margin: EdgeInsets.only(left: 40.0, top: 20.0, right: 40.0),
+                  margin: EdgeInsets.only(left: 40.0, top: 20.0),
                   padding: EdgeInsets.all(10.0),
                   height: 40,
                   width: 50,
@@ -66,6 +66,16 @@ class Homepage extends StatelessWidget{
                   child: Icon(Icons.radio),
                 ),
                 Container(
+                  margin: EdgeInsets.only(left: 40.0, top: 20.0),
+                  padding: EdgeInsets.all(10.0),
+                  height: 40,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      color: Colors.lightBlue,
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: Icon(Icons.touch_app),
+                ),
+                Container(
                   margin: EdgeInsets.only(left: 40.0, top: 20.0, right: 40.0),
                   padding: EdgeInsets.all(10.0),
                   height: 40,
@@ -73,7 +83,7 @@ class Homepage extends StatelessWidget{
                   decoration: BoxDecoration(
                       color: Colors.lightBlueAccent,
                       borderRadius: BorderRadius.circular(10.0)),
-                  child: Icon(Icons.touch_app),
+                  child: Icon(Icons.access_alarm),
                 )
                 ],
             )
@@ -81,7 +91,6 @@ class Homepage extends StatelessWidget{
         )
 
     );
-
 
   }
 }
