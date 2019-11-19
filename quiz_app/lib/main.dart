@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import './question.dart';
-import './answer.dart';
+import 'package:quiz_app/result.dart';
+import './quiz.dart';
+import './result.dart';
 
 // void main(){
 //   runApp(MyApp());
@@ -16,47 +17,69 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var questionIndex = 0;
+  final _questions = const [
+    {
+      'questionText': 'What is the capital of Australia?',
+      'answer': [
+        {'text': 'Sydney', 'score': 0},
+        {'text': 'Melbourne', 'score': 0},
+        {'text': 'Perth', 'score': 0},
+        {'text': 'Canberra', 'score': 1}
+      ],
+    },
+    {
+      'questionText': 'What is the price of Onion in Bnagladesh?',
+      'answer': [
+        {'text': '200taka', 'score': 0},
+        {'text': '240taka', 'score': 1},
+        {'text': '250taka', 'score': 0},
+        {'text': '220taka', 'score': 0}
+      ],
+    },
+    {
+      'questionText': 'Which team is current cricket world campion?',
+      'answer': [
+        {'text': 'Bangladesh', 'score': 0},
+        {'text': 'India', 'score': 0},
+        {'text': 'Australia', 'score': 0},
+        {'text': 'England', 'score': 1}
+      ],
+    },
+  ];
 
-  void answerQuestion() {
+  var _questionIndex = 0;
+  var _totalScore = 0;
+
+  void _restartQuiz() {
     setState(() {
-      questionIndex = questionIndex + 1;
+      _questionIndex = 0;
+      _totalScore = 0;
     });
-    print('Question $questionIndex answerd!');
+  }
+
+  void _answerQuestion(int score) {
+    _totalScore = _totalScore + score;
+
+    setState(() {
+      _questionIndex = _questionIndex + 1;
+    });
+    print('Question $_questionIndex answerd!');
   }
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      {
-        'questionText': 'What is your favorate color?',
-        'answer': ['Red', 'Black', 'Green', 'Yellow'],
-      },
-      {
-        'questionText': 'What is your favorate animal?',
-        'answer': ['Tiger', 'Lion', 'Rabbit', 'Hourse'],
-      },
-      {
-        'questionText': 'What is Your favorate food?',
-        'answer': ['Burger', 'Franch Fry', 'Chicken Fry', 'Kabab'],
-      },
-      
-    ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('Quiz App!'),
         ),
-        body: Column(
-          children: [
-            Question(
-              questions[questionIndex]['questionText'],
-            ),
-            ...(questions[questionIndex]['answer'] as List<String>).map((answer){
-              return Answer(answerQuestion ,answer);
-            }).toList()
-          ],
-        ),
+        body: (_questionIndex < _questions.length)
+            ? Quiz(
+                answerQuestion: _answerQuestion,
+                questions: _questions,
+                questionIndex: _questionIndex,
+              )
+            : Result(_totalScore, _restartQuiz),
       ),
     );
   }
