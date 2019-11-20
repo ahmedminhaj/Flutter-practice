@@ -98,7 +98,7 @@ class Homepage extends StatelessWidget {
                   children: <Widget>[
                     Icon(Icons.train, color: Colors.green[500]),
                     Text('Travel Time'),
-                    Text('3days'),
+                    Text('4days'),
                   ],
                 ),
               ],
