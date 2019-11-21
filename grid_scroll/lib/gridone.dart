@@ -28,13 +28,15 @@ class _GridOneState extends State<GridOne> {
       Icons.account_box,
       Icons.markunread_mailbox,
       Icons.keyboard,
-      Icons.games
+      Icons.games,
+      Icons.usb,
+      Icons.battery_full
     ];
 
     return Scaffold(
       body: GridView.count(
         crossAxisCount: 3,
-        children: List.generate(20, (index) {
+        children: List.generate(icons.length, (index) {
           return Card(
             elevation: 10.0,
             margin: EdgeInsets.all(5.0),

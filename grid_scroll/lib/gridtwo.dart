@@ -21,11 +21,11 @@ class _GridTwoState extends State<GridTwo> {
     'Keokradong',
     'Tajingdong',
     'Safafang',
-    'Chimbuk hill',
     'Dumlong',
     'Maraingtong',
     'Hanglang',
     'Panglong',
+    'Chimbuk hill',
   ];
 
   @override
@@ -33,7 +33,7 @@ class _GridTwoState extends State<GridTwo> {
     return Scaffold(
       body: GridView.count(
         crossAxisCount: 2,
-        children: List.generate(8, (index) {
+        children: List.generate(names.length, (index) {
           return Card(
             elevation: 10.0,
             child: Column(

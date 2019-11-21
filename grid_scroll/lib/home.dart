@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'gridone.dart' as gridone;
 import 'gridtwo.dart' as gridtwo;
 import 'list.dart' as flist;
+import 'customgrid.dart' as customgrid;
 
 class Home extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    controller = new TabController(length: 3, vsync: this);
+    controller = new TabController(length: 4, vsync: this);
     super.initState();
   }
 
@@ -43,6 +44,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             Tab(
               icon: Icon(Icons.list),
+            ),
+            Tab(
+              icon: Icon(Icons.card_giftcard),
             )
           ],
         ),
@@ -53,6 +57,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           gridone.GridOne(),
           gridtwo.GridTwo(),
           flist.ListView(),
+          customgrid.CustomGrid(),
         ],
       ),
     );
