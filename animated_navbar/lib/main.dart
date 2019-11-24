@@ -9,7 +9,7 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  final _pageList = ['Home', 'Attendance', 'Catering', 'Leave', 'Notification', 'Reinvorsment'];
+  final _pageList = ['Home', 'Attendance', 'Catering', 'Leave', 'Notification', 'Reimbursment'];
   int _page = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
 
@@ -67,7 +67,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             color: Colors.white,
           ),
           Icon(
-            Icons.airplanemode_active,
+            Icons.directions_walk,
             size: 25,
             color: Colors.white,
           ),
