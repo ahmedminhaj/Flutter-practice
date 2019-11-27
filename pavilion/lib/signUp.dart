@@ -139,7 +139,9 @@ class _SignupPageState extends State<SignupPage> {
                     color: Colors.green,
                     elevation: 7.0,
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/homePage');
+                      },
                       child: Center(
                         child: Text(
                           'SIGNUP',
