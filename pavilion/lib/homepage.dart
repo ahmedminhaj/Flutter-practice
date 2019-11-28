@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
     DrawerItem('Catering', Icons.restaurant_menu),
     DrawerItem('Leave Management', Icons.directions_walk),
     DrawerItem('Reinbursment', Icons.library_add),
-    DrawerItem('Notification', Icons.notifications_active),
+    DrawerItem('Notice Board', Icons.notifications_active),
   ];
   @override
   _HomePageState createState() => _HomePageState();
