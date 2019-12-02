@@ -8,8 +8,9 @@ class URLS{
 }
 
 class ApiService{
-  static Future<dynamic> _loginUser(String email, String password) async{
-    final response = await http.post('${URLS.base_url}/user_login');
+  static Future<bool> loginUser(body) async{
+    
+    final response = await http.post('${URLS.base_url}/user_login', body: body);
     if(response.statusCode==200){
       return true;
     }else{

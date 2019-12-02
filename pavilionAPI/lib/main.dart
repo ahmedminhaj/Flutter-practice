@@ -1,6 +1,6 @@
-import 'logIn.dart';
 import 'package:flutter/material.dart';
 import 'package:pavilion/homepage.dart';
+import 'logIn.dart';
 import 'signUp.dart';
 
 void main() => runApp(MyApp());
@@ -10,13 +10,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/homepage',
       routes: <String, WidgetBuilder>{
         '/signUp': (BuildContext context) => SignupPage(),
-        '/logIn': (BuildContext context) => LogInPage(),
+        '/logIn': (BuildContext context) => MyHomePage(),
         '/homePage': (BuildContext context) => HomePage(),
       },
-      home: LogInPage(),
+      home: MyHomePage(),
       theme: new ThemeData(
         primarySwatch: Colors.green,
       ),

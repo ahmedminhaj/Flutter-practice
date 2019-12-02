@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:pavilion/data/json_user.dart';
 
-class Home extends StatelessWidget {
-  Home({@required this.user});
-  final JsonUser user;
+class Reimbursment extends StatefulWidget {
+  @override
+  _ReimbursmentState createState() => _ReimbursmentState();
+}
 
-  
+class _ReimbursmentState extends State<Reimbursment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: user != null 
-        ?Text(
-          'Logged In ${user.email}',
+        child: Text(
+          'Bills & Convins',
           style: TextStyle(
             color: Colors.black,
             fontFamily: 'Poppins',
@@ -20,11 +19,8 @@ class Home extends StatelessWidget {
             fontWeight: FontWeight.bold,
             letterSpacing: 6.1,
           ),
-        )
-        :Text('Not logged In'),
+        ),
       ),
     );
   }
 }
-
-
