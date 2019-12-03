@@ -36,6 +36,20 @@ class _CateringState extends State<Catering> {
     debugPrint(userID);
   }
 
+  Future<void> deleteMeal( String id) async {
+    Map input = {
+      'id': id,
+    };
+    var url = '$base_url/catering/user_catering_order_delete';
+    http.Response response = await http.post(url, body: input);
+    data = json.decode(response.body);
+    setState(() {
+      cateringList();
+      // userData = data["data"];
+    });
+    print(input);  
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +58,7 @@ class _CateringState extends State<Catering> {
           itemCount: userData == null ? 0 : userData.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
-              margin: EdgeInsets.all(5),
+              margin: EdgeInsets.fromLTRB(5.0, 3.0, 5.0, 0.0),
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -56,7 +70,7 @@ class _CateringState extends State<Catering> {
                   ],
                 ),
                 borderRadius: BorderRadius.all(
-                  Radius.circular(30),
+                  Radius.circular(5.0),
                 ),
               ),
               child: Row(
@@ -81,12 +95,15 @@ class _CateringState extends State<Catering> {
                     height: 30,
                     width: 60,
                     child: Material(
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderRadius: BorderRadius.circular(5.0),
                       shadowColor: Colors.redAccent[400],
                       color: Colors.red[400],
                       elevation: 7.0,
                       child: FlatButton(
-                        onPressed: () {},
+                        onPressed: (){
+                          String id = '${userData[index]["id"]}';
+                          deleteMeal(id);
+                        },
                         child: Center(
                           child: Icon(
                             Icons.delete_outline,
@@ -103,7 +120,9 @@ class _CateringState extends State<Catering> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushNamed('/mealOrder');
+        },
         child: Icon(Icons.restaurant_menu),
       ),
     );

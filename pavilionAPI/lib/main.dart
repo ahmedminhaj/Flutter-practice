@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pavilion/homepage.dart';
+import 'package:pavilion/mealOrder.dart';
 import 'logIn.dart';
 import 'signUp.dart';
 
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
         '/signUp': (BuildContext context) => SignupPage(),
         '/logIn': (BuildContext context) => MyHomePage(),
         '/homePage': (BuildContext context) => HomePage(),
+        '/mealOrder': (BuildContext context) => MealOrder(),
       },
       home: MyHomePage(),
       theme: new ThemeData(

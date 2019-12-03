@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pavilion/attendance.dart';
 import 'package:pavilion/catering.dart';
 import 'package:pavilion/home.dart';
-import 'package:pavilion/leave.dart';
+import 'package:pavilion/leaveManagement.dart';
 import 'package:pavilion/notice_mail.dart';
 import 'package:pavilion/reimbursment.dart';
 
@@ -27,7 +27,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  //GlobalKey _bottomNavigationKey = GlobalKey();
 
   _getDrawerItem(int pos) {
     switch (pos) {
@@ -38,7 +37,7 @@ class _HomePageState extends State<HomePage> {
       case 2:
         return Catering();
       case 3:
-        return Leave();
+        return LeaveManagement();
       case 4:
         return Reimbursment();
       case 5:
@@ -71,11 +70,25 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.drawerItems[_selectedIndex].title),
+        backgroundColor: Colors.green[700],
       ),
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
             DrawerHeader(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.green[700],
+                    Colors.green[200],
+                  ],
+                ),
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(75),
+                ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -90,27 +103,7 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 32,
                     ),
                   ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/logIn');
-                    },
-                    child: Text(
-                      'LOGOUT',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
                 ],
-              ),
-              decoration: BoxDecoration(
-                color: Colors.green,
               ),
             ),
             Column(

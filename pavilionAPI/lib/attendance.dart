@@ -42,7 +42,7 @@ class _AttendanceState extends State<Attendance> {
         itemCount: userData == null ? 0 : userData.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.all(5),
+            margin: EdgeInsets.fromLTRB(5.0, 3.0, 5.0, 0.0),
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -54,7 +54,7 @@ class _AttendanceState extends State<Attendance> {
                 ],
               ),
               borderRadius: BorderRadius.all(
-                Radius.circular(20),
+                Radius.circular(5.0),
               ),
             ),
             child: Column(
@@ -95,7 +95,7 @@ class _AttendanceState extends State<Attendance> {
                   height: 30,
                   width: 100,
                   child: Material(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(5.0),
                     shadowColor: Colors.green,
                     color: Colors.green[600],
                     elevation: 7.0,
