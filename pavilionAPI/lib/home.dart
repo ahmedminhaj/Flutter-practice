@@ -25,8 +25,8 @@ class _HomeState extends State<Home> {
   String entry = "";
   String exit = "";
 
-  String entryMsg = "On The Way";
-  String exitMsg = "Still Working";
+  String entryMsg = "Please tap the 'Entry Time' button.";
+  String exitMsg = "Please tap the 'Exit Time' button.";
 
   getUserFromSP() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
           //print(responseData);
           setState(() {
             email = responseData['email'];
-            meal = responseData['meal'] != null ? "Placded" : "Not Placed";
+            meal = responseData['meal'] != null ? "Placed" : "Not Placed";
             entry = responseData['entry_time'] ?? entryMsg;
             exit = responseData['exit_time'] ?? exitMsg;
           });
@@ -242,31 +242,31 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "Today's meal: $meal",
+                    "Your today's meal is $meal",
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
-                      fontSize: 25.0,
+                      fontSize: 22.0,
                       fontWeight: FontWeight.w400,
                       //letterSpacing: 1.1,
                     ),
                   ),
                   Text(
-                    "Entry : $entry",
+                    entry == entryMsg ? "$entryMsg" : "Your entry time is $entry",
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
-                      fontSize: 25.0,
+                      fontSize: 20.0,
                       fontWeight: FontWeight.w400,
                       letterSpacing: 1.1,
                     ),
                   ),
                   Text(
-                    "Exit : $exit",
+                    exit == exitMsg ? "$exitMsg" : "Your exit time is $exit",
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
-                      fontSize: 25.0,
+                      fontSize: 20.0,
                       fontWeight: FontWeight.w400,
                       letterSpacing: 1.1,
                     ),

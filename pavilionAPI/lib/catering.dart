@@ -36,7 +36,7 @@ class _CateringState extends State<Catering> {
     debugPrint(userID);
   }
 
-  Future<void> deleteMeal( String id) async {
+  Future<void> deleteMeal(String id) async {
     Map input = {
       'id': id,
     };
@@ -45,9 +45,9 @@ class _CateringState extends State<Catering> {
     data = json.decode(response.body);
     setState(() {
       cateringList();
-      // userData = data["data"];
+      
     });
-    print(input);  
+    print(input);
   }
 
   @override
@@ -92,23 +92,18 @@ class _CateringState extends State<Catering> {
                         fontWeight: FontWeight.w400),
                   ),
                   Container(
-                    height: 30,
-                    width: 60,
-                    child: Material(
-                      borderRadius: BorderRadius.circular(5.0),
-                      shadowColor: Colors.redAccent[400],
-                      color: Colors.red[400],
-                      elevation: 7.0,
-                      child: FlatButton(
-                        onPressed: (){
-                          String id = '${userData[index]["id"]}';
-                          deleteMeal(id);
-                        },
-                        child: Center(
-                          child: Icon(
-                            Icons.delete_outline,
-                            color: Colors.white,
-                          ),
+                    child: InkWell(
+                      onTap: () {
+                        String id = '${userData[index]["id"]}';
+                        deleteMeal(id);
+                      },
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontFamily: 'Poppins',
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -125,6 +120,7 @@ class _CateringState extends State<Catering> {
         },
         child: Icon(Icons.restaurant_menu),
       ),
+      
     );
   }
 }
