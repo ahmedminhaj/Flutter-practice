@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'global.dart';
+import 'package:pavilion/api/global.dart';
 import 'dart:convert';
 
-class Overtime extends StatefulWidget {
+class Catering extends StatefulWidget {
   @override
-  _OvertimeState createState() => _OvertimeState();
+  _CateringState createState() => _CateringState();
 }
 
-class _OvertimeState extends State<Overtime> {
+class _CateringState extends State<Catering> {
   String userID = "";
   Map data;
   List userData;
@@ -17,23 +17,36 @@ class _OvertimeState extends State<Overtime> {
   @override
   void initState() {
     super.initState();
-    overtimeList();
+    cateringList();
   }
 
-  Future<void> overtimeList() async {
+  Future<void> cateringList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userID = prefs.getString('user_id');
-    Map input = {'user_id': userID, 'type': '2'};
-    var url = '$base_url/leave/user_overtime_list';
+    Map input = {
+      'user_id': userID,
+    };
+    var url = '$base_url/catering/user_catering_list';
     http.Response response = await http.post(url, body: input);
     data = json.decode(response.body);
     setState(() {
       userData = data["data"];
     });
-    //debugPrint(userData.toString());
-    //debugPrint(userID);
-    print('input : $input');
-    print(response.body);
+    debugPrint(userData.toString());
+    debugPrint(userID);
+  }
+
+  Future<void> deleteMeal(String id) async {
+    Map input = {
+      'id': id,
+    };
+    var url = '$base_url/catering/user_catering_order_delete';
+    http.Response response = await http.post(url, body: input);
+    data = json.decode(response.body);
+    setState(() {
+      cateringList();
+    });
+    print(input);
   }
 
   @override
@@ -65,7 +78,7 @@ class _OvertimeState extends State<Overtime> {
                   Container(
                     padding: EdgeInsets.only(left: 20.0),
                     child: Text(
-                      "Overtime List",
+                      "Catering List",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -75,10 +88,10 @@ class _OvertimeState extends State<Overtime> {
                   Container(
                     padding: EdgeInsets.only(left: 100.0),
                     child: FlatButton(
-                      onPressed: () {},
+                      onPressed: cateringList,
                       child: Center(
                         child: Icon(
-                          Icons.search,
+                          Icons.refresh,
                           color: Colors.white,
                         ),
                         // Text(
@@ -123,11 +136,28 @@ class _OvertimeState extends State<Overtime> {
                               fontWeight: FontWeight.w400),
                         ),
                         Text(
-                          "${userData[index]["is_approved"]}",
+                          "${userData[index]["day"]}",
                           style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 25.0,
                               fontWeight: FontWeight.w400),
+                        ),
+                        Container(
+                          child: InkWell(
+                            onTap: () {
+                              String id = '${userData[index]["id"]}';
+                              deleteMeal(id);
+                            },
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontFamily: 'Poppins',
+                                fontSize: 25.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -139,8 +169,10 @@ class _OvertimeState extends State<Overtime> {
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.green[700],
-          onPressed: () {},
-          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.of(context).pushNamed('/mealOrder');
+          },
+          child: Icon(Icons.restaurant_menu),
         ),
       ),
     );

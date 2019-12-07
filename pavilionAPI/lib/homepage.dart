@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pavilion/attendance.dart';
-import 'package:pavilion/catering.dart';
+import 'package:pavilion/catering/catering.dart';
 import 'package:pavilion/home.dart';
-import 'package:pavilion/leaveManagement.dart';
+import 'package:pavilion/leaveManagement/leaveManagement.dart';
 import 'package:pavilion/notice_mail.dart';
 import 'package:pavilion/reimbursment.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerItem {
   String title;
@@ -19,8 +20,9 @@ class HomePage extends StatefulWidget {
     DrawerItem('Catering', Icons.restaurant_menu),
     DrawerItem('Leave Management', Icons.directions_walk),
     DrawerItem('Reinbursment', Icons.library_add),
-    DrawerItem('Notification', Icons.notifications_active),
+    DrawerItem('Notification', Icons.notifications_active), 
   ];
+  
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -41,7 +43,7 @@ class _HomePageState extends State<HomePage> {
       case 4:
         return Reimbursment();
       case 5:
-        return NoticeMail();
+        return NoticeMail();  
       default:
         return Text('Error');
     }
@@ -50,6 +52,21 @@ class _HomePageState extends State<HomePage> {
   _onSelectItem(int index) {
     setState(() => _selectedIndex = index);
     Navigator.of(context).pop();
+  }
+
+  @override
+  void initState() {
+    getUserName();
+    super.initState();
+  }
+  String userName = '';
+  String userID = '';
+  getUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userName = prefs.getString('user_name');
+    setState(() {
+      userID = prefs.getString('user_id');
+    });
   }
 
   @override
@@ -103,6 +120,31 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 32,
                     ),
                   ),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  Text(
+                    "$userName",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Poppins',
+                      fontSize: 25,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      
+                      Navigator.of(context).pushNamed('/profile');
+                    },
+                    child: Text(
+                      'View Profile',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline),
+                    ),
+                  )
                 ],
               ),
             ),

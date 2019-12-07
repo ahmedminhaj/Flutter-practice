@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:pavilion/global.dart';
+import 'package:pavilion/api/global.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,6 +12,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final formKey = GlobalKey<FormState>();
   String _email, _password;
+  bool passwordVisible;
+
+  @override
+  void initState() {
+    passwordVisible = false;
+    super.initState();
+  }
 
   Future<void> login() async {
     if (formKey.currentState.validate()) {
@@ -149,10 +156,23 @@ class _MyHomePageState extends State<MyHomePage> {
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.green),
                         ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            passwordVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.green,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
+                        ),
                       ),
-                      obscureText: true,
-                      validator: (input) => input.length < 7
-                          ? 'Password must be more then 7 characters'
+                      obscureText: passwordVisible,
+                      validator: (input) => input.length < 5
+                          ? 'Password must be more then 5 characters'
                           : null,
                     ),
                     SizedBox(

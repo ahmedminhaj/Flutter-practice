@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'global.dart';
+import 'package:pavilion/api/global.dart';
 import 'dart:convert';
 
 class MealOrder extends StatefulWidget {
@@ -47,7 +47,8 @@ class _MealOrderState extends State<MealOrder> {
             print(responseData);
 
             showToast(responseBody['message']);
-            Navigator.of(context).pushNamed('/homePage');
+            //Navigator.of(context).PushNamed('/catering');
+            //Navigator.popAndPushNamed(context, '/catering');
           } else {
             showToast(responseBody['message']);
           }
@@ -88,8 +89,8 @@ class _MealOrderState extends State<MealOrder> {
                   Container(
                     padding: EdgeInsets.only(left: 5.0),
                     child: FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
+                      onPressed: (){
+                        Navigator.pop(context);
                       },
                       child: Icon(
                         Icons.arrow_back,
@@ -184,7 +185,7 @@ class _MealOrderState extends State<MealOrder> {
                   ),
                   TextField(
                     controller: _commentController,
-                    onChanged: (v) => _commentController.text = v,
+                    //onChanged: (v) => _commentController.text = v,
                     decoration: InputDecoration(
                       labelText: 'Comment',
                       labelStyle: TextStyle(

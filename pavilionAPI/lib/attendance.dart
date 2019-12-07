@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'global.dart';
+import 'package:pavilion/api/global.dart';
 import 'dart:convert';
 
 class Attendance extends StatefulWidget {

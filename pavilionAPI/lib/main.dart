@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pavilion/catering.dart';
+import 'package:pavilion/profile/Profile.dart';
+import 'package:pavilion/catering/catering.dart';
+import 'package:pavilion/profile/editProfile.dart';
 import 'package:pavilion/homepage.dart';
-import 'package:pavilion/mealOrder.dart';
+import 'package:pavilion/catering/mealOrder.dart';
+import 'package:pavilion/profile/resetPassword.dart';
 import 'logIn.dart';
 import 'signUp.dart';
 
@@ -18,6 +21,10 @@ class MyApp extends StatelessWidget {
         '/homePage': (BuildContext context) => HomePage(),
         '/mealOrder': (BuildContext context) => MealOrder(),
         '/catering': (BuildContext context) => Catering(),
+        '/profile': (BuildContext context) => Profile(),
+        '/resetPass': (BuildContext context) => ResetPassword(),
+        '/editProfile': (BuildContext context) => EditProfile(),
+        
       },
       home: MyHomePage(),
       theme: new ThemeData(

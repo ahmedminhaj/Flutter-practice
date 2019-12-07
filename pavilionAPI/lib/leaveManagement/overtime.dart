@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'global.dart';
+import 'package:pavilion/api/global.dart';
 import 'dart:convert';
 
-class Leave extends StatefulWidget {
+class Overtime extends StatefulWidget {
   @override
-  _LeaveState createState() => _LeaveState();
+  _OvertimeState createState() => _OvertimeState();
 }
 
-class _LeaveState extends State<Leave> {
+class _OvertimeState extends State<Overtime> {
   String userID = "";
   Map data;
   List userData;
@@ -17,21 +17,23 @@ class _LeaveState extends State<Leave> {
   @override
   void initState() {
     super.initState();
-    leaveList();
+    overtimeList();
   }
 
-  Future<void> leaveList() async {
+  Future<void> overtimeList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userID = prefs.getString('user_id');
-    Map input = {'user_id': userID, 'type': '1'};
-    var url = '$base_url/leave/user_leave_list';
+    Map input = {'user_id': userID, 'type': '2'};
+    var url = '$base_url/leave/user_overtime_list';
     http.Response response = await http.post(url, body: input);
     data = json.decode(response.body);
     setState(() {
       userData = data["data"];
     });
-    debugPrint(userData.toString());
-    debugPrint(userID);
+    //debugPrint(userData.toString());
+    //debugPrint(userID);
+    print('input : $input');
+    print(response.body);
   }
 
   @override
@@ -63,7 +65,7 @@ class _LeaveState extends State<Leave> {
                   Container(
                     padding: EdgeInsets.only(left: 20.0),
                     child: Text(
-                      "Leave List",
+                      "Overtime List",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -138,7 +140,7 @@ class _LeaveState extends State<Leave> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.green[700],
           onPressed: () {},
-          child: Icon(Icons.add_box),
+          child: Icon(Icons.add),
         ),
       ),
     );

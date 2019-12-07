@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:pavilion/global.dart';
+import 'package:pavilion/api/global.dart';
+
 import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
@@ -13,18 +14,15 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     getUserFromSP();
-
     super.initState();
   }
 
   String userName = "";
   String userID = "";
-
   String email = "";
   String meal = "";
   String entry = "";
   String exit = "";
-
   String entryMsg = "Please tap the 'Entry Time' button.";
   String exitMsg = "Please tap the 'Exit Time' button.";
 
@@ -44,7 +42,7 @@ class _HomeState extends State<Home> {
     };
 
     try {
-      var url = '$base_url/user/user_profile';
+      var url = '$base_url/user/user_today_info';
       var response = await http.post(url, body: input);
 
       if (response.statusCode == 200) {
@@ -158,8 +156,7 @@ class _HomeState extends State<Home> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(
-                            "https://image.freepik.com/free-vector/profile-icon-male-emotion-avatar_48369-2004.jpg"),
+                        image: AssetImage('assets/image/avater.jpg'),
                       ),
                     ),
                   ),
@@ -258,7 +255,7 @@ class _HomeState extends State<Home> {
                       fontFamily: 'Poppins',
                       fontSize: 20.0,
                       fontWeight: FontWeight.w400,
-                      letterSpacing: 1.1,
+                      //letterSpacing: 1.1,
                     ),
                   ),
                   Text(
@@ -268,7 +265,7 @@ class _HomeState extends State<Home> {
                       fontFamily: 'Poppins',
                       fontSize: 20.0,
                       fontWeight: FontWeight.w400,
-                      letterSpacing: 1.1,
+                      //letterSpacing: 1.1,
                     ),
                   ),
                   SizedBox(
