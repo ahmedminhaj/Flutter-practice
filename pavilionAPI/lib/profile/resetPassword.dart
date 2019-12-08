@@ -15,47 +15,19 @@ class _ResetPasswordState extends State<ResetPassword> {
   String _newPass, _confirmPass, _oldPass;
 
   String userID = "";
+  String userName, userDesignation, userDepartment;
   var data;
   var userData;
-  String email,
-      name,
-      personalEmail,
-      address,
-      contactNumber,
-      joinDate,
-      nid,
-      bloodGroup,
-      designation,
-      emergencyContact,
-      bankAccount,
-      department;
 
   Future<void> profileInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userID = prefs.getString('user_id');
-    Map input = {
-      'user_id': userID,
-    };
-    var url = '$base_url/user/user_profile';
-    http.Response response = await http.post(url, body: input);
-    data = jsonDecode(response.body);
-    userData = data['data'];
+
     setState(() {
-      email = userData['email'];
-      name = userData['name'];
-      personalEmail = userData['personal_email'];
-      address = userData['permanent_address'];
-      contactNumber = userData['contact_no'];
-      joinDate = userData['join_date'];
-      nid = userData['nid'];
-      bloodGroup = userData['blood_group'];
-      designation = userData['designation'];
-      emergencyContact = userData['emergency_contact'];
-      bankAccount = userData['bank_account_no'];
-      department = userData['department_name'];
+      userName = prefs.getString('user_full_name');
+      userDepartment = prefs.getString('user_department_name');
+      userDesignation = prefs.getString('user_designation');
     });
-    //debugPrint(userData.toString());
-    print(data);
   }
 
   Future<void> resetPass() async {
@@ -143,7 +115,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                           children: <Widget>[
                             Container(
                               child: Text(
-                                "$name",
+                                "$userName",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'Poppins',
@@ -153,7 +125,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                               ),
                             ),
                             Text(
-                              "$designation",
+                              "$userDesignation",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Poppins',
@@ -165,7 +137,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                               width: 5.5,
                             ),
                             Text(
-                              "$department",
+                              "$userDepartment",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Poppins',
