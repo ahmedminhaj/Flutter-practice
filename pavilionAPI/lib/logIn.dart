@@ -4,12 +4,12 @@ import 'package:pavilion/api/global.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MyHomePage extends StatefulWidget {
+class LogInPage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LogInPageState createState() => _LogInPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _LogInPageState extends State<LogInPage> {
   final formKey = GlobalKey<FormState>();
   String _email, _password;
   bool passwordVisible;
@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
             prefs.setString('user_name', responseData['name']);
 
             // Navigate to homepage
-            Navigator.of(context).pushNamed('/homePage');
+            Navigator.of(context).pushNamed('/navigationPage');
           } else {
             print(responseBody);
           }

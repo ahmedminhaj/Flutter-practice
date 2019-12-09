@@ -13,7 +13,7 @@ class DrawerItem {
   DrawerItem(this.title, this.icon);
 }
 
-class HomePage extends StatefulWidget {
+class NavigationPage extends StatefulWidget {
   final drawerItems = [
     DrawerItem('Home', Icons.home),
     DrawerItem('Attendance', Icons.calendar_today),
@@ -24,10 +24,10 @@ class HomePage extends StatefulWidget {
   ];
   
   @override
-  _HomePageState createState() => _HomePageState();
+  _NavigationPageState createState() => _NavigationPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _NavigationPageState extends State<NavigationPage> {
   int _selectedIndex = 0;
 
   _getDrawerItem(int pos) {

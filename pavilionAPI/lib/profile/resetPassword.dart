@@ -50,8 +50,13 @@ class _ResetPasswordState extends State<ResetPassword> {
         if (response.statusCode == 200) {
           var responseBody = jsonDecode(response.body);
           if (responseBody['status']) {
+
+            prefs.clear();
             showToast(responseBody['message']);
-            Navigator.of(context).pushNamed('/logIn');
+
+            //Navigator.of(context).pushNamed('/logIn');
+            Navigator.of(context).pushNamedAndRemoveUntil('/logIn', (Route<dynamic> route) => false);
+            
           } else {
             showToast(responseBody['message']);
             print(responseBody);

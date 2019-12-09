@@ -15,7 +15,7 @@ class _ProfileState extends State<Profile> {
   String userID = "";
   var data;
   var userData;
-  String email, name, personalEmail, address, contactNumber, joinDate, nid, bloodGroup, designation, emergencyContact, bankAccount, department;
+  String email, name, personalEmail, address, contactNumber, joinDate, nid, bloodGroup, designation, emergencyContact, relation, bankAccount, department;
 
   @override
   void initState() {
@@ -45,6 +45,7 @@ class _ProfileState extends State<Profile> {
     prefs.setString('user_emergency_contact', userData['emergency_contact']);
     prefs.setString('user_bank_account_no', userData['bank_account_no']);
     prefs.setString('user_department_name', userData['department_name']);
+    prefs.setString('user_relation_with_emergency_contact', userData['relation_with_emergency_contact']);
     
     setState(() {
       email = prefs.getString('user_email') ?? '';
@@ -59,6 +60,7 @@ class _ProfileState extends State<Profile> {
       emergencyContact = prefs.getString('user_emergency_contact') ?? '';
       bankAccount = prefs.getString('user_bank_account_no') ?? '';
       department = prefs.getString('user_department_name') ?? '';
+      relation = prefs.getString('user_relation_with_emergency_contact') ?? '';
     });
     //debugPrint(userData.toString());
     print(data);
@@ -189,6 +191,10 @@ class _ProfileState extends State<Profile> {
                 ProfileInfoCard(
                   keyName: 'Emerency Contact Number',
                   value: '$emergencyContact',
+                ),
+                ProfileInfoCard(
+                  keyName: 'Relation with emergency contact',
+                  value: '$relation',
                 ),
                 ProfileInfoCard(
                   keyName: 'Bank Account Number',

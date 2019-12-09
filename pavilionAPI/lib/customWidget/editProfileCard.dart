@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class EditProfileCard extends StatelessWidget {
   final String keyName;
   final String oldValue;
+  final  onSave;
 
   EditProfileCard({
     this.keyName,
     this.oldValue,
+    this.onSave,
   });
 
   @override
@@ -19,6 +21,7 @@ class EditProfileCard extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: TextFormField(
             initialValue: oldValue,
+            onSaved: onSave,
             decoration: InputDecoration(
               labelText: keyName,
               labelStyle: TextStyle(

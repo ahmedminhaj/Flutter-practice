@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pavilion/navigation.dart';
 import 'package:pavilion/profile/Profile.dart';
 import 'package:pavilion/catering/catering.dart';
 import 'package:pavilion/profile/editProfile.dart';
-import 'package:pavilion/homepage.dart';
 import 'package:pavilion/catering/mealOrder.dart';
 import 'package:pavilion/profile/resetPassword.dart';
 import 'logIn.dart';
@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
         '/signUp': (BuildContext context) => SignupPage(),
-        '/logIn': (BuildContext context) => MyHomePage(),
-        '/homePage': (BuildContext context) => HomePage(),
+        '/logIn': (BuildContext context) => LogInPage(),
+        '/navigationPage': (BuildContext context) => NavigationPage(),
         '/mealOrder': (BuildContext context) => MealOrder(),
         '/catering': (BuildContext context) => Catering(),
         '/profile': (BuildContext context) => Profile(),
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         '/editProfile': (BuildContext context) => EditProfile(),
         
       },
-      home: MyHomePage(),
+      home: NavigationPage(),
       theme: new ThemeData(
         primarySwatch: Colors.green,
       ),

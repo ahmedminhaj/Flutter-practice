@@ -33,7 +33,12 @@ class _HomeState extends State<Home> {
       userName = prefs.getString('user_name') ?? '';
       userID = prefs.getString('user_id') ?? '';
     });
-    loadingProfile();
+
+    if (userID == null && userName == null) {
+      Navigator.of(context).pushNamed('/logIn');
+    } else {
+      loadingProfile();
+    }
   }
 
   Future<void> loadingProfile() async {
@@ -249,7 +254,9 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   Text(
-                    entry == entryMsg ? "$entryMsg" : "Your entry time is $entry",
+                    entry == entryMsg
+                        ? "$entryMsg"
+                        : "Your entry time is $entry",
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
