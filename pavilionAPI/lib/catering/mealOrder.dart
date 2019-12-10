@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
 import 'dart:convert';
+import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 
 class MealOrder extends StatefulWidget {
   @override
@@ -13,16 +14,17 @@ class MealOrder extends StatefulWidget {
 class _MealOrderState extends State<MealOrder> {
   static final TextEditingController _commentController =
       TextEditingController();
-  String inputDate;
+  String inputDate = ' ', startDate, endDate;
   DateTime currentDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  DateTime datetemp;
+  DateTime datetemp, startDateT, endDateT;
+  List<DateTime> dateRange;
   String userID;
   Map data;
   List userData;
 
   String get comment => _commentController.text;
-
+  
   Future<void> mealOrder() async {
     if (inputDate != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -89,7 +91,7 @@ class _MealOrderState extends State<MealOrder> {
                   Container(
                     padding: EdgeInsets.only(left: 5.0),
                     child: FlatButton(
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.pop(context);
                       },
                       child: Icon(
@@ -120,34 +122,120 @@ class _MealOrderState extends State<MealOrder> {
               padding: EdgeInsets.only(top: 100.0, left: 30.0, right: 30.0),
               child: Column(
                 children: <Widget>[
+                  // RaisedButton(
+                  //   shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(5.0)),
+                  //   elevation: 4.0,
+                  //   onPressed: () {
+                  //     showDatePicker(
+                  //       context: context,
+                  //       initialDate: datetemp == null ? currentDate : datetemp,
+                  //       firstDate: DateTime(DateTime.now().year,
+                  //           DateTime.now().month, DateTime.now().day),
+                  //       lastDate: DateTime(3001),
+                  //     ).then((date) {
+                  //       setState(() {
+                  //         datetemp = date;
+                  //         inputDate = '${date.year}-${date.month}-${date.day}';
+                  //       });
+                  //     });
+                  //   },
+                  //   child: Container(
+                  //     alignment: Alignment.center,
+                  //     height: 50.0,
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //       children: <Widget>[
+                  //         Row(
+                  //           children: <Widget>[
+                  //             Container(
+                  //               child: Row(
+                  //                 children: <Widget>[
+                  //                   Icon(
+                  //                     Icons.date_range,
+                  //                     size: 18.0,
+                  //                     color: Colors.green[700],
+                  //                   ),
+                  //                   Text(
+                  //                     " $inputDate",
+                  //                     style: TextStyle(
+                  //                         color: Colors.green[700],
+                  //                         fontFamily: 'Poppins',
+                  //                         fontWeight: FontWeight.bold,
+                  //                         fontSize: 18.0),
+                  //                   ),
+                  //                 ],
+                  //               ),
+                  //             )
+                  //           ],
+                  //         ),
+                  //         Text(
+                  //           "Pick Date",
+                  //           style: TextStyle(
+                  //               color: Colors.green[700],
+                  //               fontFamily: 'Poppins',
+                  //               fontWeight: FontWeight.bold,
+                  //               fontSize: 18.0),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  //   color: Colors.white,
+                  // ),
+                  // SizedBox(
+                  //   height: 20.0,
+                  // ),
                   RaisedButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0)),
                     elevation: 4.0,
-                    onPressed: () {
-                      showDatePicker(
+                    onPressed: () async {
+                      final List<DateTime> picked =
+                          await DateRagePicker.showDatePicker(
                         context: context,
-                        initialDate: datetemp == null ? currentDate : datetemp,
+                        initialFirstDate: DateTime.now(),
+                        initialLastDate:DateTime.now(),
                         firstDate: DateTime(DateTime.now().year,
                             DateTime.now().month, DateTime.now().day),
-                        lastDate: DateTime(3001),
-                      ).then((date) {
+                        lastDate: DateTime(3030),
+                      );
+                      
+                      if (picked != null) {
+                        //print(picked);
                         setState(() {
-                          datetemp = date;
-                          inputDate = '${date.year}-${date.month}-${date.day}';
+                          startDateT = picked[0];
+                          endDateT = picked[1];
+                           
+                          final dateToGenerate =
+                              endDateT.difference(startDateT).inDays;
+                          dateRange = List.generate(
+                            dateToGenerate + 1,
+                            (i) => DateTime(startDateT.year, startDateT.month,
+                                startDateT.day + (i)),
+                          );
+
+                          startDate =
+                              '${startDateT.year}-${startDateT.month}-${startDateT.day}';
+                          endDate =
+                              '${endDateT.year}-${endDateT.month}-${endDateT.day}';
                         });
-                      });
+                        print(picked[0]);
+                        print(picked[1]);
+                        print(dateRange);
+                      }
                     },
                     child: Container(
                       alignment: Alignment.center,
                       height: 50.0,
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
                                 child: Row(
+
                                   children: <Widget>[
                                     Icon(
                                       Icons.date_range,
@@ -155,14 +243,15 @@ class _MealOrderState extends State<MealOrder> {
                                       color: Colors.green[700],
                                     ),
                                     Text(
-                                      " $inputDate",
+                                       startDate == null && endDate == null ? 'Pick a date or date range ' :"$startDate to $endDate",
                                       style: TextStyle(
                                           color: Colors.green[700],
                                           fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w600,
                                           fontSize: 18.0),
                                     ),
                                   ],
+
                                 ),
                               )
                             ],
@@ -222,7 +311,8 @@ class _MealOrderState extends State<MealOrder> {
                         ),
                       ),
                     ),
-                  ),SizedBox(
+                  ),
+                  SizedBox(
                     height: 30.0,
                   ),
                 ],
