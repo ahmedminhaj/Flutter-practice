@@ -70,19 +70,31 @@ class _LeaveState extends State<Leave> {
                           fontWeight: FontWeight.w500),
                     ),
                   ),
+                  // Container(
+                  //   padding: EdgeInsets.only(left: 50.0),
+                  //   child: FlatButton(
+                  //     onPressed: () {},
+                  //     child: Center(
+                  //       child: Icon(
+                  //         Icons.search,
+                  //         color: Colors.white,
+                  //       ),
+                  //       // Text(
+                  //       //   'Search',
+                  //       //   style: TextStyle(color: Colors.white, fontSize: 20),
+                  //       // ),
+                  //     ),
+                  //   ),
+                  // ),
                   Container(
-                    padding: EdgeInsets.only(left: 100.0),
+                    padding: EdgeInsets.only(left: 50.0),
                     child: FlatButton(
-                      onPressed: () {},
+                      onPressed: leaveList,
                       child: Center(
                         child: Icon(
-                          Icons.search,
+                          Icons.refresh,
                           color: Colors.white,
                         ),
-                        // Text(
-                        //   'Search',
-                        //   style: TextStyle(color: Colors.white, fontSize: 20),
-                        // ),
                       ),
                     ),
                   ),
@@ -100,9 +112,15 @@ class _LeaveState extends State<Leave> {
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomRight,
-                        colors: [
-                          Colors.green[100],
+                        colors: userData[index]["is_approved"]  == 'Approved'? [
+                          Colors.green[200],
                           Colors.green[300],
+                        ] : userData[index]["is_approved"]  == 'Rejected'? [
+                          Colors.red[100],
+                          Colors.red[200],
+                        ] : [
+                          Colors.grey[200],
+                          Colors.grey[300],
                         ],
                       ),
                       borderRadius: BorderRadius.all(
@@ -125,6 +143,7 @@ class _LeaveState extends State<Leave> {
                           style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 25.0,
+                              // color: userData[index]["is_approved"]  == 'Approved' ? Colors.green[800] : Colors.black,
                               fontWeight: FontWeight.w400),
                         ),
                       ],
@@ -137,7 +156,9 @@ class _LeaveState extends State<Leave> {
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.green[700],
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed('/takeLeave');
+          },
           child: Icon(Icons.add_box),
         ),
       ),

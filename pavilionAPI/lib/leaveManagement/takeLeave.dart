@@ -7,12 +7,12 @@ import 'dart:convert';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:intl/intl.dart';
 
-class MealOrder extends StatefulWidget {
+class TakeLeave extends StatefulWidget {
   @override
-  _MealOrderState createState() => _MealOrderState();
+  _TakeLeaveState createState() => _TakeLeaveState();
 }
 
-class _MealOrderState extends State<MealOrder> {
+class _TakeLeaveState extends State<TakeLeave> {
   static final TextEditingController _commentController =
       TextEditingController();
   String inputDate = ' ', startDate, endDate;
@@ -27,24 +27,25 @@ class _MealOrderState extends State<MealOrder> {
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
   String get comment => _commentController.text;
+  
 
-  Future<void> mealOrder() async {
+  Future<void> takeLeave() async {
     if (dateRange != null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      userID = prefs.getString('user_id');
 
       dateString = dateRange.reduce((value, element) => value + ',' + element);
       print(dateString);
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      userID = prefs.getString('user_id');
-
       Map input = {
         'user_id': userID,
         'date': dateString,
+        'type': '1',
         'comment': comment,
       };
 
       try {
-        var url = '$base_url/catering/user_catering_order_create';
+        var url = '$base_url/leave/user_leave_create';
         var response = await http.post(url, body: input);
 
         if (response.statusCode == 200) {
@@ -109,18 +110,18 @@ class _MealOrderState extends State<MealOrder> {
                     ),
                   ),
                   Icon(
-                    Icons.restaurant_menu,
+                    Icons.calendar_view_day,
                     size: 35,
                     color: Colors.white,
                   ),
                   Text(
-                    "Order Meal",
+                    "Leave Request",
                     style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w700,
-                        fontSize: 30,
+                        fontSize: 26,
                         color: Colors.white,
-                        letterSpacing: 4.1),
+                        letterSpacing: 2.1),
                   ),
                 ],
               ),
@@ -220,7 +221,7 @@ class _MealOrderState extends State<MealOrder> {
                     controller: _commentController,
                     //onChanged: (v) => _commentController.text = v,
                     decoration: InputDecoration(
-                      labelText: 'Comment',
+                      labelText: 'Cause Of Leave',
                       labelStyle: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.bold,
@@ -243,10 +244,10 @@ class _MealOrderState extends State<MealOrder> {
                       color: Colors.green,
                       elevation: 7.0,
                       child: FlatButton(
-                        onPressed: mealOrder,
+                        onPressed: takeLeave,
                         child: Center(
                           child: Text(
-                            'Order Now',
+                            'Leave Request',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

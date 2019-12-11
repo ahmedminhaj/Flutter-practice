@@ -4,23 +4,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
 import 'dart:convert';
-import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:intl/intl.dart';
 
-class MealOrder extends StatefulWidget {
+class RiseOvertime extends StatefulWidget {
   @override
-  _MealOrderState createState() => _MealOrderState();
+  _RiseOvertimeState createState() => _RiseOvertimeState();
 }
 
-class _MealOrderState extends State<MealOrder> {
+class _RiseOvertimeState extends State<RiseOvertime> {
   static final TextEditingController _commentController =
       TextEditingController();
-  String inputDate = ' ', startDate, endDate;
+  String inputDate;
   DateTime currentDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  DateTime datetemp, startDateT, endDateT;
-  List<String> dateRange;
-  var dateString;
+  DateTime datetemp;
   String userID;
   Map data;
   List userData;
@@ -28,23 +25,20 @@ class _MealOrderState extends State<MealOrder> {
 
   String get comment => _commentController.text;
 
-  Future<void> mealOrder() async {
-    if (dateRange != null) {
-
-      dateString = dateRange.reduce((value, element) => value + ',' + element);
-      print(dateString);
-
+  Future<void> riseOvertime() async {
+    if (inputDate != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       userID = prefs.getString('user_id');
 
       Map input = {
         'user_id': userID,
-        'date': dateString,
+        'type': "2",
+        'date': inputDate,
         'comment': comment,
       };
 
       try {
-        var url = '$base_url/catering/user_catering_order_create';
+        var url = '$base_url/leave/user_overtime_create';
         var response = await http.post(url, body: input);
 
         if (response.statusCode == 200) {
@@ -69,7 +63,7 @@ class _MealOrderState extends State<MealOrder> {
       }
       print(input);
     } else {
-      showToast("Need a date to order meal");
+      showToast("Need a date to rise overtime");
     }
   }
 
@@ -109,18 +103,18 @@ class _MealOrderState extends State<MealOrder> {
                     ),
                   ),
                   Icon(
-                    Icons.restaurant_menu,
+                    Icons.calendar_today,
                     size: 35,
                     color: Colors.white,
                   ),
                   Text(
-                    "Order Meal",
+                    "Rise Overtime",
                     style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w700,
-                        fontSize: 30,
+                        fontSize: 26,
                         color: Colors.white,
-                        letterSpacing: 4.1),
+                        letterSpacing: 2.1),
                   ),
                 ],
               ),
@@ -133,53 +127,30 @@ class _MealOrderState extends State<MealOrder> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0)),
                     elevation: 4.0,
-                    onPressed: () async {
-                      final List<DateTime> picked =
-                          await DateRagePicker.showDatePicker(
+                    onPressed: () {
+                      showDatePicker(
                         context: context,
-                        initialFirstDate: DateTime.now(),
-                        initialLastDate:DateTime.now(),
-                        firstDate: DateTime(DateTime.now().year,
+                        initialDate: datetemp == null ? currentDate : datetemp,
+                        firstDate: DateTime(2001),
+                        lastDate: DateTime(DateTime.now().year,
                             DateTime.now().month, DateTime.now().day),
-                        lastDate: DateTime(3030),
-                      );
-                      
-                      if (picked != null) {
-                        //print(picked);
+                      ).then((date) {
                         setState(() {
-                          startDateT = picked[0];
-                          endDateT = picked[1];
-                           
-                          final dateToGenerate =
-                              endDateT.difference(startDateT).inDays;
-                          dateRange = List.generate(
-                            dateToGenerate + 1,
-                            (i) => dateFormat.format(DateTime(startDateT.year, startDateT.month,
-                                startDateT.day + (i))),
-                          );
-
-                          startDate =
-                              '${startDateT.year}-${startDateT.month}-${startDateT.day}';
-                          endDate =
-                              '${endDateT.year}-${endDateT.month}-${endDateT.day}';
+                          datetemp = date;
+                          inputDate = '${date.year}-${date.month}-${date.day}';
                         });
-                        print(picked[0]);
-                        print(picked[1]);
-                        print(dateRange);
-                      }
+                      });
                     },
                     child: Container(
                       alignment: Alignment.center,
                       height: 50.0,
-                      child: Column(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
                                 child: Row(
-
                                   children: <Widget>[
                                     Icon(
                                       Icons.date_range,
@@ -187,15 +158,14 @@ class _MealOrderState extends State<MealOrder> {
                                       color: Colors.green[700],
                                     ),
                                     Text(
-                                       startDate == null && endDate == null ? 'Pick a date or date range ' :"$startDate to $endDate",
+                                      inputDate==null ? ' ' : " $inputDate",
                                       style: TextStyle(
                                           color: Colors.green[700],
                                           fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600,
+                                          fontWeight: FontWeight.bold,
                                           fontSize: 18.0),
                                     ),
                                   ],
-
                                 ),
                               )
                             ],
@@ -220,7 +190,7 @@ class _MealOrderState extends State<MealOrder> {
                     controller: _commentController,
                     //onChanged: (v) => _commentController.text = v,
                     decoration: InputDecoration(
-                      labelText: 'Comment',
+                      labelText: 'Overtime Details',
                       labelStyle: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.bold,
@@ -236,17 +206,17 @@ class _MealOrderState extends State<MealOrder> {
                   ),
                   Container(
                     height: 40.0,
-                    width: 120.0,
+                    width: 150.0,
                     child: Material(
                       borderRadius: BorderRadius.circular(20.0),
                       shadowColor: Colors.greenAccent,
                       color: Colors.green,
                       elevation: 7.0,
                       child: FlatButton(
-                        onPressed: mealOrder,
+                        onPressed: riseOvertime,
                         child: Center(
                           child: Text(
-                            'Order Now',
+                            'Request Overtime',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

@@ -46,11 +46,11 @@ class _AttendanceState extends State<Attendance> {
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.topCenter,
+                begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Colors.green[100],
-                  Colors.green[300],
+                  Colors.grey[200],
+                  Colors.grey[300],
                 ],
               ),
               borderRadius: BorderRadius.all(

@@ -72,19 +72,31 @@ class _OvertimeState extends State<Overtime> {
                           fontWeight: FontWeight.w500),
                     ),
                   ),
+                  // Container(
+                  //   padding: EdgeInsets.only(left: 50.0),
+                  //   child: FlatButton(
+                  //     onPressed: () {},
+                  //     child: Center(
+                  //       child: Icon(
+                  //         Icons.search,
+                  //         color: Colors.white,
+                  //       ),
+                  //       // Text(
+                  //       //   'Search',
+                  //       //   style: TextStyle(color: Colors.white, fontSize: 20),
+                  //       // ),
+                  //     ),
+                  //   ),
+                  // ),
                   Container(
-                    padding: EdgeInsets.only(left: 100.0),
+                    padding: EdgeInsets.only(left: 50.0),
                     child: FlatButton(
-                      onPressed: () {},
+                      onPressed: overtimeList,
                       child: Center(
                         child: Icon(
-                          Icons.search,
+                          Icons.refresh,
                           color: Colors.white,
                         ),
-                        // Text(
-                        //   'Search',
-                        //   style: TextStyle(color: Colors.white, fontSize: 20),
-                        // ),
                       ),
                     ),
                   ),
@@ -103,8 +115,8 @@ class _OvertimeState extends State<Overtime> {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomRight,
                         colors: [
-                          Colors.green[100],
-                          Colors.green[300],
+                          Colors.grey[200],
+                          Colors.grey[300],
                         ],
                       ),
                       borderRadius: BorderRadius.all(
@@ -139,7 +151,9 @@ class _OvertimeState extends State<Overtime> {
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.green[700],
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed('/riseOvertime');
+          },
           child: Icon(Icons.add),
         ),
       ),

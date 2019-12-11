@@ -116,8 +116,8 @@ class _CateringState extends State<Catering> {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomRight,
                         colors: [
-                          Colors.green[100],
-                          Colors.green[300],
+                          Colors.grey[200],
+                          Colors.grey[300],
                         ],
                       ),
                       borderRadius: BorderRadius.all(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pavilion/leaveManagement/riseOvertime.dart';
+import 'package:pavilion/leaveManagement/takeLeave.dart';
 import 'package:pavilion/navigation.dart';
 import 'package:pavilion/profile/Profile.dart';
 import 'package:pavilion/catering/catering.dart';
@@ -24,6 +26,8 @@ class MyApp extends StatelessWidget {
         '/profile': (BuildContext context) => Profile(),
         '/resetPass': (BuildContext context) => ResetPassword(),
         '/editProfile': (BuildContext context) => EditProfile(),
+        '/takeLeave': (BuildContext context) => TakeLeave(),
+        '/riseOvertime': (BuildContext context) => RiseOvertime(),
         
       },
       home: NavigationPage(),

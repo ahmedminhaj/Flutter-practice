@@ -260,21 +260,22 @@ class _HomeState extends State<Home> {
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
-                      fontSize: 20.0,
+                      fontSize: 22.0,
                       fontWeight: FontWeight.w400,
                       //letterSpacing: 1.1,
                     ),
                   ),
+                  entry != entryMsg ?
                   Text(
-                    exit == exitMsg ? "$exitMsg" : "Your exit time is $exit",
+                    exit == exitMsg ? "$exitMsg" : "Your exit time is $exit", 
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
-                      fontSize: 20.0,
+                      fontSize: 22.0,
                       fontWeight: FontWeight.w400,
                       //letterSpacing: 1.1,
                     ),
-                  ),
+                  ) : Text(""),
                   SizedBox(
                     height: 20.0,
                   ),
@@ -305,7 +306,8 @@ class _HomeState extends State<Home> {
                             )
                           : Container(),
                       entry != entryMsg && exit == exitMsg
-                          ? Container(
+                          ? 
+                          Container(
                               //padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                               child: Material(
                                 borderRadius: BorderRadius.circular(20.0),
