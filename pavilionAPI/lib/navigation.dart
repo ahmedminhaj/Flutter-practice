@@ -63,7 +63,7 @@ class _NavigationPageState extends State<NavigationPage> {
   String userID = '';
   getUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName = prefs.getString('user_name');
+    userName = prefs.getString('users_username');
     setState(() {
       userID = prefs.getString('user_id');
     });

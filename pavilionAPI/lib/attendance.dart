@@ -13,6 +13,7 @@ class _AttendanceState extends State<Attendance> {
   String userID = "";
   Map data;
   List userData;
+  var attendanceId;
 
   @override
   void initState() {
@@ -32,7 +33,24 @@ class _AttendanceState extends State<Attendance> {
     setState(() {
       userData = data["data"];
     });
-    debugPrint(userData.toString());
+    //debugPrint(userData.toString());
+    print(data);
+  }
+
+  attendanceReview(var attendanceID) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.setString('attendance_id', attendanceID['id']);
+      prefs.setString('attendance_entry_time', attendanceID['entry_time']);
+      prefs.setString('attendance_exit_time', attendanceID['exit_time']);
+      prefs.setString('attendance_date', attendanceID['date']);
+      
+    });
+    Navigator.of(context).pushNamed('/reviewAttendance');
+
+    // String aET = prefs.getString('attendance_entry_time');
+    // print(attendanceID);
+    // print(aET);
   }
 
   @override
@@ -91,29 +109,43 @@ class _AttendanceState extends State<Attendance> {
                     ],
                   ),
                 ),
-                Container(
-                  height: 30,
-                  width: 100,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(5.0),
-                    shadowColor: Colors.green,
-                    color: Colors.green[600],
-                    elevation: 7.0,
-                    child: FlatButton(
-                      onPressed: () {},
-                      child: Center(
-                        child: Text(
-                          'Review',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Poppins'),
+                userData[index]["status"] == null
+                    ? Container(
+                        height: 30,
+                        width: 100,
+                        child: Material(
+                          borderRadius: BorderRadius.circular(5.0),
+                          shadowColor: Colors.green,
+                          color: Colors.green[600],
+                          elevation: 7.0,
+                          child: FlatButton(
+                            onPressed: () {
+                              attendanceId = userData[index];
+                              attendanceReview(attendanceId);
+                              //print(attendanceId);
+                            },
+                            child: Center(
+                              child: Text(
+                                'Review',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: 'Poppins'),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                ),
+                      )
+                    : Container(
+                        child: Text(
+                        userData[index]["status"] == '0' ? "Pending" : userData[index]["status"] == '1' ? "Accepted" : "Rejected",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Poppins'),
+                      )),
               ],
             ),
           );

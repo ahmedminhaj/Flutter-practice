@@ -44,7 +44,11 @@ class _LogInPageState extends State<LogInPage> {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.setString('user_id', responseData['id']);
             prefs.setString('user_name', responseData['name']);
-
+            prefs.setString('user_designation', responseData['designation']);
+            prefs.setString('user_department', responseData['department']);
+            prefs.setString('users_username', responseData['username']);
+            prefs.setString('token', responseData['token']);
+            print(responseData);
             // Navigate to homepage
             Navigator.of(context).pushNamed('/navigationPage');
           } else {

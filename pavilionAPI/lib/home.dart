@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pavilion/api/global.dart';
@@ -18,6 +19,9 @@ class _HomeState extends State<Home> {
   }
 
   String userName = "";
+  String userDesignation = "";
+  String userDepartment = "";
+  var token;
   String userID = "";
   String email = "";
   String meal = "";
@@ -30,12 +34,15 @@ class _HomeState extends State<Home> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     setState(() {
-      userName = prefs.getString('user_name') ?? '';
+      userName = prefs.getString('users_username') ?? '';
+      userDesignation = prefs.getString('user_designation') ?? '';
+      userDepartment = prefs.getString('user_department') ?? '';
       userID = prefs.getString('user_id') ?? '';
+      token = prefs.getString('token') ?? '';
     });
 
-    if (userID == null && userName == null) {
-      Navigator.of(context).pushNamed('/logIn');
+    if (userID == '' && userName == '') {
+      Navigator.of(context).pushNamedAndRemoveUntil('/logIn', (Route<dynamic> route) => false);
     } else {
       loadingProfile();
     }
@@ -45,10 +52,11 @@ class _HomeState extends State<Home> {
     Map input = {
       'user_id': userID,
     };
+    
 
     try {
       var url = '$base_url/user/user_today_info';
-      var response = await http.post(url, body: input);
+      var response = await http.post(url, headers: {HttpHeaders.authorizationHeader: token}, body: input);
 
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
@@ -62,11 +70,17 @@ class _HomeState extends State<Home> {
             entry = responseData['entry_time'] ?? entryMsg;
             exit = responseData['exit_time'] ?? exitMsg;
           });
-        } else {
           print(responseBody);
+          
+        } else {
+          print('status false');
+          print(responseBody);
+          showToast(responseBody['message']);
+          Navigator.of(context).pushNamedAndRemoveUntil('/logIn', (Route<dynamic> route) => false);
         }
       } else {
-        //print('Error in status code');
+        print('Error in status code');
+        
         print(response.statusCode);
       }
     } catch (e) {
@@ -194,7 +208,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         Text(
-                          'Trainee',
+                          '$userDesignation',
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Poppins',
@@ -204,7 +218,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         Text(
-                          'Peddlecloud',
+                          '$userDepartment',
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Poppins',

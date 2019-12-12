@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pavilion/attendanceReview.dart';
 import 'package:pavilion/leaveManagement/riseOvertime.dart';
 import 'package:pavilion/leaveManagement/takeLeave.dart';
 import 'package:pavilion/navigation.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/editProfile': (BuildContext context) => EditProfile(),
         '/takeLeave': (BuildContext context) => TakeLeave(),
         '/riseOvertime': (BuildContext context) => RiseOvertime(),
+        '/reviewAttendance': (BuildContext context) => AttendanceReview(),
         
       },
       home: NavigationPage(),
