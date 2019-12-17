@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +16,7 @@ class _AttendanceState extends State<Attendance> {
   Map data;
   List userData;
   var attendanceId;
+  var token;
 
   @override
   void initState() {
@@ -24,15 +27,45 @@ class _AttendanceState extends State<Attendance> {
   Future<void> attendanceList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userID = prefs.getString('user_id');
+    token = prefs.getString('token') ?? '';
     Map input = {
       'user_id': userID,
     };
-    var url = '$base_url/user/user_timing_list';
-    http.Response response = await http.post(url, body: input);
-    data = json.decode(response.body);
-    setState(() {
-      userData = data["data"];
-    });
+    try {
+      var url = '$base_url/user/user_timing_list';
+      http.Response response = await http.post(url,
+          headers: {HttpHeaders.authorizationHeader: token}, body: input);
+      if (response.statusCode == 200) {
+        var responseBody = jsonDecode(response.body);
+
+        if (responseBody['status']) {
+          print(responseBody);
+          data = json.decode(response.body);
+          setState(() {
+            userData = data["data"];
+          });
+        } else {
+          //print('status false');
+          //print(responseBody);
+
+          if (responseBody['message'] == tokenDatabaseCheck ||
+              responseBody['message'] == tokenTimeCheck) {
+            showToast(responseBody['message']);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/logIn', (Route<dynamic> route) => false);
+          } else {
+            showToast(responseBody['message']);
+          }
+        }
+      } else {
+        print('Error in status code');
+
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print(e);
+    }
+
     //debugPrint(userData.toString());
     print(data);
   }
@@ -81,7 +114,7 @@ class _AttendanceState extends State<Attendance> {
                   "${userData[index]["date"]}",
                   style: TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: 25.0,
+                      fontSize: 20.0,
                       fontWeight: FontWeight.w400),
                 ),
                 Container(
@@ -92,23 +125,23 @@ class _AttendanceState extends State<Attendance> {
                         "Entry: ${userData[index]["entry_time"]}",
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: 20.0,
+                          fontSize: 17.0,
                         ),
                       ),
                       SizedBox(
-                        width: 17.9,
+                        width: 30,
                       ),
                       Text(
                         "Exit: ${userData[index]["exit_time"]}",
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: 20.0,
+                          fontSize: 17.0,
                         ),
                       ),
                     ],
                   ),
                 ),
-                userData[index]["status"] == null
+                userData[index]["status"] != '0'
                     ? Container(
                         height: 30,
                         width: 100,
@@ -128,7 +161,7 @@ class _AttendanceState extends State<Attendance> {
                                 'Review',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 20.0,
+                                    fontSize: 17.0,
                                     fontWeight: FontWeight.w400,
                                     fontFamily: 'Poppins'),
                               ),
@@ -137,19 +170,42 @@ class _AttendanceState extends State<Attendance> {
                         ),
                       )
                     : Container(
-                        child: Text(
-                          userData[index]["status"] == '0'
-                              ? "Pending"
-                              : userData[index]["status"] == '1'
-                                  ? "Accepted"
-                                  : "Rejected",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Poppins'),
+                        height: 30,
+                        width: 100,
+                        child: Material(
+                          borderRadius: BorderRadius.circular(5.0),
+                          shadowColor: Colors.grey,
+                          color: Colors.grey[600],
+                          elevation: 7.0,
+                          child: FlatButton(
+                            onPressed: () {},
+                            child: Center(
+                              child: Text(
+                                'Pending',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17.0,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: 'Poppins'),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                      )
+                // Container(
+                //     child: Text(
+                //       userData[index]["status"] == '0'
+                //           ? "Pending"
+                //           : userData[index]["status"] == '1'
+                //               ? "Accepted"
+                //               : "Rejected",
+                //       style: TextStyle(
+                //           color: Colors.black,
+                //           fontSize: 20.0,
+                //           fontWeight: FontWeight.w400,
+                //           fontFamily: 'Poppins'),
+                //     ),
+                //   ),
               ],
             ),
           );
