@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:pavilion/customWidget/customText.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
@@ -70,10 +71,11 @@ class _CateringState extends State<Catering> {
     Map input = {
       'id': id,
     };
-    try{
+    try {
       var url = '$base_url/catering/user_catering_order_delete';
-    http.Response response = await http.post(url, headers: {HttpHeaders.authorizationHeader: token}, body: input);
-    if (response.statusCode == 200) {
+      http.Response response = await http.post(url,
+          headers: {HttpHeaders.authorizationHeader: token}, body: input);
+      if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
 
         if (responseBody['status']) {
@@ -100,9 +102,9 @@ class _CateringState extends State<Catering> {
 
         print(response.statusCode);
       }
-    }catch(e){print(e);}
-    
-    
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -133,12 +135,9 @@ class _CateringState extends State<Catering> {
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      "Catering List",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500),
+                    child: CustomText(
+                      inputText: "Catering List",
+                      textColor: Colors.white,
                     ),
                   ),
                   Container(
@@ -184,19 +183,13 @@ class _CateringState extends State<Catering> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Text(
-                          " ${userData[index]["date"]}",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w400),
+                        CustomText(
+                          inputText: " ${userData[index]["date"]}",
+                          textColor: Colors.black,
                         ),
-                        Text(
-                          "${userData[index]["day"]}",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w400),
+                        CustomText(
+                          inputText: " ${userData[index]["day"]}",
+                          textColor: Colors.black,
                         ),
                         Container(
                           child: InkWell(

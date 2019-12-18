@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:pavilion/customWidget/customText.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
@@ -96,12 +97,9 @@ class _LeaveState extends State<Leave> {
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      "Leave List",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500),
+                    child: CustomText(
+                      inputText: "Leave List",
+                      textColor: Colors.white,
                     ),
                   ),
                   // Container(
@@ -169,20 +167,13 @@ class _LeaveState extends State<Leave> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Text(
-                          " ${userData[index]["date"]}",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w400),
+                        CustomText(
+                          inputText: " ${userData[index]["date"]}",
+                          textColor: Colors.black,
                         ),
-                        Text(
-                          "${userData[index]["is_approved"]}",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 20.0,
-                              // color: userData[index]["is_approved"]  == 'Approved' ? Colors.green[800] : Colors.black,
-                              fontWeight: FontWeight.w400),
+                        CustomText(
+                          inputText: " ${userData[index]["is_approved"]}",
+                          textColor: Colors.black,
                         ),
                       ],
                     ),

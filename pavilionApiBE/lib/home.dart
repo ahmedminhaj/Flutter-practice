@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:pavilion/customWidget/customText.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pavilion/api/global.dart';
 
@@ -42,7 +43,8 @@ class _HomeState extends State<Home> {
     });
 
     if (userID == '' && userName == '') {
-      Navigator.of(context).pushNamedAndRemoveUntil('/logIn', (Route<dynamic> route) => false);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/logIn', (Route<dynamic> route) => false);
     } else {
       loadingProfile();
     }
@@ -52,11 +54,11 @@ class _HomeState extends State<Home> {
     Map input = {
       'user_id': userID,
     };
-    
 
     try {
       var url = '$base_url/user/user_today_info';
-      var response = await http.post(url, headers: {HttpHeaders.authorizationHeader: token}, body: input);
+      var response = await http.post(url,
+          headers: {HttpHeaders.authorizationHeader: token}, body: input);
 
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
@@ -71,16 +73,16 @@ class _HomeState extends State<Home> {
             exit = responseData['exit_time'] ?? exitMsg;
           });
           print(responseBody);
-          
         } else {
           print('status false');
           print(responseBody);
           showToast(responseBody['message']);
-          Navigator.of(context).pushNamedAndRemoveUntil('/logIn', (Route<dynamic> route) => false);
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/logIn', (Route<dynamic> route) => false);
         }
       } else {
         print('Error in status code');
-        
+
         print(response.statusCode);
       }
     } catch (e) {
@@ -165,7 +167,7 @@ class _HomeState extends State<Home> {
                   bottomLeft: Radius.circular(100),
                 ),
               ),
-              padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+              padding: EdgeInsets.fromLTRB(40.0, 0.0, 0.0, 0.0),
               child: Row(
                 children: <Widget>[
                   Container(
@@ -187,45 +189,17 @@ class _HomeState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text(
-                          '$userName',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Poppins',
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 1.1,
-                          ),
+                        CustomText(
+                          inputText: "$userName",
+                          textColor: Colors.white,
                         ),
-                        Text(
-                          '$email',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Poppins',
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 1.1,
-                          ),
+                        CustomText(
+                          inputText: "$userDesignation",
+                          textColor: Colors.white,
                         ),
-                        Text(
-                          '$userDesignation',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Poppins',
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 1.1,
-                          ),
-                        ),
-                        Text(
-                          '$userDepartment',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Poppins',
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 1.1,
-                          ),
+                        CustomText(
+                          inputText: "$userDepartment",
+                          textColor: Colors.white,
                         ),
                       ],
                     ),
@@ -257,15 +231,9 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    "Your today's meal is $meal",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Poppins',
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.w400,
-                      //letterSpacing: 1.1,
-                    ),
+                  CustomText(
+                    inputText: "Your today's meal is $meal",
+                    textColor: Colors.black,
                   ),
                   Text(
                     entry == entryMsg
@@ -279,17 +247,20 @@ class _HomeState extends State<Home> {
                       //letterSpacing: 1.1,
                     ),
                   ),
-                  entry != entryMsg ?
-                  Text(
-                    exit == exitMsg ? "$exitMsg" : "Your exit time is $exit", 
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Poppins',
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.w400,
-                      //letterSpacing: 1.1,
-                    ),
-                  ) : Text(""),
+                  entry != entryMsg
+                      ? Text(
+                          exit == exitMsg
+                              ? "$exitMsg"
+                              : "Your exit time is $exit",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.w400,
+                            //letterSpacing: 1.1,
+                          ),
+                        )
+                      : Text(""),
                   SizedBox(
                     height: 20.0,
                   ),
@@ -306,13 +277,9 @@ class _HomeState extends State<Home> {
                                 child: FlatButton(
                                   onPressed: entryTime,
                                   child: Center(
-                                    child: Text(
-                                      'Entry Time',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'Poppins'),
+                                    child: CustomText(
+                                      inputText: "Entry Time",
+                                      textColor: Colors.white,
                                     ),
                                   ),
                                 ),
@@ -320,8 +287,7 @@ class _HomeState extends State<Home> {
                             )
                           : Container(),
                       entry != entryMsg && exit == exitMsg
-                          ? 
-                          Container(
+                          ? Container(
                               //padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                               child: Material(
                                 borderRadius: BorderRadius.circular(20.0),
@@ -331,13 +297,9 @@ class _HomeState extends State<Home> {
                                 child: FlatButton(
                                   onPressed: exitTime,
                                   child: Center(
-                                    child: Text(
-                                      'Exit Time',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'Poppins'),
+                                    child: CustomText(
+                                      inputText: "Exit Time",
+                                      textColor: Colors.white,
                                     ),
                                   ),
                                 ),

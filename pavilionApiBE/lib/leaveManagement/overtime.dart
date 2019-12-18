@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:pavilion/customWidget/customText.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
@@ -31,10 +32,11 @@ class _OvertimeState extends State<Overtime> {
       'user_id': userID,
       'type': '2',
     };
-    try{
+    try {
       var url = '$base_url/leave/user_overtime_list';
-    http.Response response = await http.post(url, headers: {HttpHeaders.authorizationHeader: token}, body: input);
-    if (response.statusCode == 200) {
+      http.Response response = await http.post(url,
+          headers: {HttpHeaders.authorizationHeader: token}, body: input);
+      if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
 
         if (responseBody['status']) {
@@ -60,9 +62,9 @@ class _OvertimeState extends State<Overtime> {
 
         print(response.statusCode);
       }
-    }catch(e){
+    } catch (e) {
       print(e);
-      }
+    }
   }
 
   @override
@@ -93,12 +95,9 @@ class _OvertimeState extends State<Overtime> {
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      "Overtime List",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500),
+                    child: CustomText(
+                      inputText: "Overtime List",
+                      textColor: Colors.white,
                     ),
                   ),
                   // Container(
@@ -166,19 +165,13 @@ class _OvertimeState extends State<Overtime> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Text(
-                          " ${userData[index]["date"]}",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w400),
+                        CustomText(
+                          inputText: " ${userData[index]["date"]}",
+                          textColor: Colors.black,
                         ),
-                        Text(
-                          "${userData[index]["is_approved"]}",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w400),
+                        CustomText(
+                          inputText: " ${userData[index]["is_approved"]}",
+                          textColor: Colors.black,
                         ),
                       ],
                     ),

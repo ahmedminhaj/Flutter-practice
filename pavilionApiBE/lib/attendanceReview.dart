@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:pavilion/customWidget/commentBox.dart';
+import 'package:pavilion/customWidget/headerContainer.dart';
+import 'package:pavilion/customWidget/submitButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
@@ -14,7 +18,7 @@ class _AttendanceReviewState extends State<AttendanceReview> {
   static final TextEditingController _commentController =
       TextEditingController();
   String get comment => _commentController.text;
-  var attendanceID, attendanceExitTime, attendanceEntryTime, attendanceDate;
+  var attendanceID, attendanceExitTime, attendanceEntryTime, attendanceDate, token;
   Map data;
   List userData;
 
@@ -36,6 +40,7 @@ class _AttendanceReviewState extends State<AttendanceReview> {
   Future<void> reviewAttendance() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     attendanceID = prefs.getString('attendance_id');
+    token = prefs.getString('token') ?? '';
 
     print("review comment:: " + comment);
     if (comment == '') {
@@ -47,7 +52,7 @@ class _AttendanceReviewState extends State<AttendanceReview> {
       };
       try {
         var url = '$base_url/user/user_attendance_review';
-        var response = await http.post(url, body: input);
+        var response = await http.post(url, headers: {HttpHeaders.authorizationHeader: token}, body: input);
 
         if (response.statusCode == 200) {
           var responseBody = jsonDecode(response.body);
@@ -93,48 +98,9 @@ class _AttendanceReviewState extends State<AttendanceReview> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 5,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colors.green[700],
-                    Colors.green[200],
-                  ],
-                ),
-              ),
-              child: Row(
-                //mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    child: FlatButton(
-                      onPressed: goBack,
-                      child: Icon(
-                        Icons.arrow_back,
-                        size: 35,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Icon(
-                    Icons.edit,
-                    size: 35,
-                    color: Colors.white,
-                  ),
-                  Text(
-                    "Review",
-                    style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 25,
-                        color: Colors.white,
-                        letterSpacing: 2.1),
-                  ),
-                ],
-              ),
+            HeaderContainer(
+              headerIcon: Icons.mode_edit,
+              headerTitle: "Review",
             ),
             Container(
               padding: EdgeInsets.only(top: 100.0, left: 30.0, right: 30.0),
@@ -168,44 +134,16 @@ class _AttendanceReviewState extends State<AttendanceReview> {
                   SizedBox(
                     height: 20.0,
                   ),
-                  TextField(
-                    controller: _commentController,
-                    decoration: InputDecoration(
-                      labelText: 'Review details',
-                      labelStyle: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green),
-                      ),
-                    ),
+                  CommentBox(
+                    commentController: _commentController,
+                    boxLabel: "Review details",
                   ),
                   SizedBox(
                     height: 50.0,
                   ),
-                  Container(
-                    height: 40.0,
-                    width: 120.0,
-                    child: Material(
-                      borderRadius: BorderRadius.circular(20.0),
-                      shadowColor: Colors.greenAccent,
-                      color: Colors.green,
-                      elevation: 7.0,
-                      child: FlatButton(
-                        onPressed: reviewAttendance,
-                        child: Center(
-                          child: Text(
-                            'Review',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Poppins'),
-                          ),
-                        ),
-                      ),
-                    ),
+                  SubmitButton(
+                    onPressed: reviewAttendance,
+                    buttonTitle: "Review",
                   ),
                   SizedBox(
                     height: 30.0,

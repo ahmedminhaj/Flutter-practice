@@ -209,29 +209,29 @@ class _LogInPageState extends State<LogInPage> {
               SizedBox(
                 height: 35.0,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'New in Pavilion ?',
-                    style: TextStyle(fontFamily: 'Poppins'),
-                  ),
-                  SizedBox(width: 5.0),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/signUp');
-                    },
-                    child: Text(
-                      'Sign Up',
-                      style: TextStyle(
-                          color: Colors.green,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline),
-                    ),
-                  )
-                ],
-              )
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     Text(
+              //       'New in Pavilion ?',
+              //       style: TextStyle(fontFamily: 'Poppins'),
+              //     ),
+              //     SizedBox(width: 5.0),
+              //     InkWell(
+              //       onTap: () {
+              //         Navigator.of(context).pushNamed('/signUp');
+              //       },
+              //       child: Text(
+              //         'Sign Up',
+              //         style: TextStyle(
+              //             color: Colors.green,
+              //             fontFamily: 'Poppins',
+              //             fontWeight: FontWeight.bold,
+              //             decoration: TextDecoration.underline),
+              //       ),
+              //     )
+              //   ],
+              // )
             ],
           ),
         ),

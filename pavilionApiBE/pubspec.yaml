@@ -17,6 +17,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   date_range_picker: ^1.0.5
   intl: ^0.16.0
+  animator: ^1.0.0+3
 
 dev_dependencies:
   flutter_test:

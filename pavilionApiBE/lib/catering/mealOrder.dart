@@ -2,6 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:pavilion/customWidget/commentBox.dart';
+import 'package:pavilion/customWidget/dateRangeBox.dart';
+import 'package:pavilion/customWidget/headerContainer.dart';
+import 'package:pavilion/customWidget/submitButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
@@ -90,51 +94,9 @@ class _MealOrderState extends State<MealOrder> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 5,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colors.green[700],
-                    Colors.green[200],
-                  ],
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.only(left: 5.0),
-                    child: FlatButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back,
-                        size: 35,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Icon(
-                    Icons.restaurant_menu,
-                    size: 35,
-                    color: Colors.white,
-                  ),
-                  Text(
-                    "Order Meal",
-                    style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 25,
-                        color: Colors.white,
-                        letterSpacing: 2.1),
-                  ),
-                ],
-              ),
+            HeaderContainer(
+              headerIcon: Icons.restaurant_menu,
+              headerTitle: "Meal Order",
             ),
             Container(
               padding: EdgeInsets.only(top: 100.0, left: 30.0, right: 30.0),
@@ -142,7 +104,8 @@ class _MealOrderState extends State<MealOrder> {
                 children: <Widget>[
                   RaisedButton(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
                     elevation: 4.0,
                     onPressed: () async {
                       //var _date;
@@ -201,86 +164,27 @@ class _MealOrderState extends State<MealOrder> {
                         print(dateRange);
                       }
                     },
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 50.0,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.date_range,
-                                      size: 18.0,
-                                      color: Colors.green[700],
-                                    ),
-                                    Text(
-                                      showDate == null
-                                          ? ' Pick a date or date range'
-                                          : " $showDate",
-                                      //startDate == null && endDate == null ? 'Pick a date or date range ' :"$startDate to $endDate",
-                                      style: TextStyle(
-                                          color: Colors.green[700],
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18.0),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
+                    child: 
+                    DateRangeBox(
+                      showDateRange: showDate,
+                      boxLabel: " Pick a date or date range",
                     ),
+                    
                     color: Colors.white,
                   ),
                   SizedBox(
                     height: 20.0,
                   ),
-                  TextField(
-                    controller: _commentController,
-                    //onChanged: (v) => _commentController.text = v,
-                    decoration: InputDecoration(
-                      labelText: 'Comment',
-                      labelStyle: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green),
-                      ),
-                    ),
+                  CommentBox(
+                    commentController: _commentController,
+                    boxLabel: "Any specification",
                   ),
                   SizedBox(
                     height: 50.0,
                   ),
-                  Container(
-                    height: 40.0,
-                    width: 120.0,
-                    child: Material(
-                      borderRadius: BorderRadius.circular(20.0),
-                      shadowColor: Colors.greenAccent,
-                      color: Colors.green,
-                      elevation: 7.0,
-                      child: FlatButton(
-                        onPressed: mealOrder,
-                        child: Center(
-                          child: Text(
-                            'Order Now',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Poppins'),
-                          ),
-                        ),
-                      ),
-                    ),
+                  SubmitButton(
+                    onPressed: mealOrder,
+                    buttonTitle: "Order Now",
                   ),
                   SizedBox(
                     height: 30.0,

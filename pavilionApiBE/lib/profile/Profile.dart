@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:animator/animator.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -22,7 +23,7 @@ class _ProfileState extends State<Profile> {
       personalEmail = " ",
       address = " ",
       contactNumber = " ",
-      joinDate  = " ",
+      joinDate = " ",
       nid = " ",
       bloodGroup = " ",
       designation = " ",
@@ -160,16 +161,26 @@ class _ProfileState extends State<Profile> {
                   ),
                   trailing: CircleAvatar(
                     backgroundColor: Colors.white,
-                    child: Container(
-                      width: 20.0,
-                      height: 20.0,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: AssetImage('assets/image/leftArrow.png'),
+                    child: Animator(
+                      tweenMap: {
+                        "opacity": Tween<double>(begin: 0.5, end: 1),
+                        "translation": Tween<Offset>(
+                          begin: Offset(0.5, 0),
+                          end: Offset(-0.3, 0),
+                        )
+                      },
+                      cycles: 1,
+                      duration: Duration(milliseconds: 1500),
+                      builderMap: (Map<String, Animation> anim) =>
+                          FadeTransition(
+                        opacity: anim["opacity"],
+                        child: FractionalTranslation(
+                          translation: anim["translation"].value,
+                          child: FlutterLogo(
+                            size: 35,
+                          ),
                         ),
                       ),
-                      //Image.asset("assets/image/leftArrow.png",)
                     ),
                   ),
                   title: Text(
