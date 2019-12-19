@@ -1,7 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:pavilion/customWidget/customText.dart';
 import 'package:pavilion/customWidget/editProfileCard.dart';
+import 'package:pavilion/customWidget/submitButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
@@ -251,7 +252,6 @@ class _EditProfileState extends State<EditProfile> {
                           oldValue: address,
                           onSave: (input) => userAddress = input,
                         ),
-
                         EditProfileCard(
                           keyName: 'Emergency Contact Number',
                           oldValue: emergencyContact,
@@ -262,11 +262,6 @@ class _EditProfileState extends State<EditProfile> {
                           oldValue: relation,
                           onSave: (input) => userRelation = input,
                         ),
-                        // EditProfileCard(
-                        //   keyName: 'Bank Account Number',
-                        //   oldValue: bankAccount,
-                        //   onSave: (input) => userBankAccount = input,
-                        // ),
                         DropdownButton(
                           hint: Text("Please choose your blood group"),
                           //value: bloodGroup,
@@ -290,27 +285,9 @@ class _EditProfileState extends State<EditProfile> {
                     SizedBox(
                       height: 10.0,
                     ),
-                    Container(
-                      height: 40.0,
-                      width: 120.0,
-                      child: Material(
-                        borderRadius: BorderRadius.circular(20.0),
-                        shadowColor: Colors.greenAccent,
-                        color: Colors.green,
-                        elevation: 7.0,
-                        child: FlatButton(
-                          onPressed: saveProfile,
-                          child: Center(
-                            child: Text(
-                              'Save Profile',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Poppins'),
-                            ),
-                          ),
-                        ),
-                      ),
+                    SubmitButton(
+                      onPressed: saveProfile,
+                      buttonTitle: "Save Profile",
                     ),
                     SizedBox(
                       height: 10.0,

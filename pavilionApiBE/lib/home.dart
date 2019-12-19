@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:pavilion/customWidget/attendanceButton.dart';
 import 'package:pavilion/customWidget/customText.dart';
+import 'package:pavilion/customWidget/submitButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pavilion/api/global.dart';
 
@@ -29,7 +32,7 @@ class _HomeState extends State<Home> {
   String entry = "";
   String exit = "";
   String entryMsg = "Please tap the 'Entry Time' button.";
-  String exitMsg = "Please tap the 'Exit Time' button.";
+  String exitMsg = "Tap the 'Exit Time' button before leave the office.";
 
   getUserFromSP() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -74,11 +77,19 @@ class _HomeState extends State<Home> {
           });
           print(responseBody);
         } else {
-          print('status false');
-          print(responseBody);
-          showToast(responseBody['message']);
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              '/logIn', (Route<dynamic> route) => false);
+          if (responseBody['message'] == tokenDatabaseCheck ||
+              responseBody['message'] == tokenTimeCheck) {
+            showToast(responseBody['message']);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/logIn', (Route<dynamic> route) => false);
+          } else {
+            showToast(responseBody['message']);
+          }
+          // print('status false');
+          // print(responseBody);
+          // showToast(responseBody['message']);
+          // Navigator.of(context).pushNamedAndRemoveUntil(
+          //     '/logIn', (Route<dynamic> route) => false);
         }
       } else {
         print('Error in status code');
@@ -97,7 +108,8 @@ class _HomeState extends State<Home> {
 
     try {
       var url = '$base_url/user/user_entry_time';
-      var response = await http.post(url, body: input);
+      var response = await http.post(url,
+          headers: {HttpHeaders.authorizationHeader: token}, body: input);
 
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
@@ -106,7 +118,14 @@ class _HomeState extends State<Home> {
           showToast(responseBody['message']);
           loadingProfile();
         } else {
-          showToast(responseBody['message']);
+          if (responseBody['message'] == tokenDatabaseCheck ||
+              responseBody['message'] == tokenTimeCheck) {
+            showToast(responseBody['message']);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/logIn', (Route<dynamic> route) => false);
+          } else {
+            showToast(responseBody['message']);
+          }
         }
       } else {
         //print('Error in status code');
@@ -124,7 +143,8 @@ class _HomeState extends State<Home> {
 
     try {
       var url = '$base_url/user/user_exit_time';
-      var response = await http.post(url, body: input);
+      var response = await http.post(url,
+          headers: {HttpHeaders.authorizationHeader: token}, body: input);
 
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
@@ -133,7 +153,14 @@ class _HomeState extends State<Home> {
           showToast(responseBody['message']);
           loadingProfile();
         } else {
-          showToast(responseBody['message']);
+          if (responseBody['message'] == tokenDatabaseCheck ||
+              responseBody['message'] == tokenTimeCheck) {
+            showToast(responseBody['message']);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/logIn', (Route<dynamic> route) => false);
+          } else {
+            showToast(responseBody['message']);
+          }
         }
       } else {
         //print('Error in status code');
@@ -146,6 +173,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat("EEEEEEEEEEE,  d MMMM y").format(now);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -153,7 +182,7 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 3,
+              height: MediaQuery.of(context).size.height / 3.9,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -208,11 +237,11 @@ class _HomeState extends State<Home> {
               ),
             ),
             SizedBox(
-              height: 40.0,
+              height: 10.0,
             ),
             Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 2.1,
+              height: MediaQuery.of(context).size.height / 1.6,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -222,91 +251,155 @@ class _HomeState extends State<Home> {
                     Colors.white,
                   ],
                 ),
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(75),
-                ),
               ),
-              padding: EdgeInsets.fromLTRB(30.0, 0.0, 0.0, 0.0),
+              padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  CustomText(
-                    inputText: "Your today's meal is $meal",
-                    textColor: Colors.black,
-                  ),
-                  Text(
-                    entry == entryMsg
-                        ? "$entryMsg"
-                        : "Your entry time is $entry",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Poppins',
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.w400,
-                      //letterSpacing: 1.1,
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white,
+                          Colors.white,
+                        ],
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                    ),
+                    child: CustomText(
+                      inputText: formattedDate,
+                      textColor: Colors.black,
                     ),
                   ),
-                  entry != entryMsg
-                      ? Text(
-                          exit == exitMsg
-                              ? "$exitMsg"
-                              : "Your exit time is $exit",
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.grey[200],
+                          Colors.grey[300],
+                        ],
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        meal == "Not Placed"
+                            ? Column(
+                                children: <Widget>[
+                                  CustomText(
+                                    inputText: "Order your today's meal",
+                                    textColor: Colors.black,
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  SubmitButton(
+                                    buttonTitle: "Order meal",
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pushNamed('/mealOrder');
+                                    },
+                                  ),
+                                ],
+                              )
+                            : CustomText(
+                                inputText: "Your today's meal is $meal",
+                                textColor: Colors.black,
+                              )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.grey[200],
+                          Colors.grey[300],
+                        ],
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          entry == entryMsg
+                              ? "$entryMsg"
+                              : "Your entry time is $entry",
                           style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'Poppins',
-                            fontSize: 22.0,
+                            fontSize: 20.0,
                             fontWeight: FontWeight.w400,
                             //letterSpacing: 1.1,
                           ),
-                        )
-                      : Text(""),
+                        ),
+                        entry != entryMsg
+                            ? Text(
+                                exit == exitMsg
+                                    ? "$exitMsg"
+                                    : "Your exit time is $exit",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w400,
+                                  //letterSpacing: 1.1,
+                                ),
+                              )
+                            : Text(""),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            entry == entryMsg
+                                ? AttendanceButton(
+                                    inputText: "Entry Time",
+                                    color: Colors.green[600],
+                                    shadow: Colors.greenAccent,
+                                    onPressed: entryTime,
+                                  )
+                                : Container(),
+                            entry != entryMsg && exit == exitMsg
+                                ? AttendanceButton(
+                                    inputText: "Exit Time",
+                                    color: Colors.red[400],
+                                    shadow: Colors.red[300],
+                                    onPressed: exitTime,
+                                  )
+                                : Container(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                   SizedBox(
                     height: 20.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      entry == entryMsg
-                          ? Container(
-                              child: Material(
-                                borderRadius: BorderRadius.circular(20.0),
-                                shadowColor: Colors.green,
-                                color: Colors.green[400],
-                                elevation: 7.0,
-                                child: FlatButton(
-                                  onPressed: entryTime,
-                                  child: Center(
-                                    child: CustomText(
-                                      inputText: "Entry Time",
-                                      textColor: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          : Container(),
-                      entry != entryMsg && exit == exitMsg
-                          ? Container(
-                              //padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                              child: Material(
-                                borderRadius: BorderRadius.circular(20.0),
-                                shadowColor: Colors.redAccent,
-                                color: Colors.red[300],
-                                elevation: 7.0,
-                                child: FlatButton(
-                                  onPressed: exitTime,
-                                  child: Center(
-                                    child: CustomText(
-                                      inputText: "Exit Time",
-                                      textColor: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          : Container(),
-                    ],
                   ),
                 ],
               ),

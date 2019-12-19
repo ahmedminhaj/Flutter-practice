@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:animator/animator.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:pavilion/customWidget/profileInfoCard.dart';
@@ -42,9 +41,11 @@ class _ProfileState extends State<Profile> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userID = prefs.getString('user_id');
     token = prefs.getString('token') ?? '';
+
     Map input = {
       'user_id': userID,
     };
+
     try {
       var url = '$base_url/user/user_profile';
       http.Response response = await http.post(url,
@@ -89,9 +90,6 @@ class _ProfileState extends State<Profile> {
                 prefs.getString('user_relation_with_emergency_contact') ?? '';
           });
         } else {
-          //print('status false');
-          //print(responseBody);
-
           if (responseBody['message'] == tokenDatabaseCheck ||
               responseBody['message'] == tokenTimeCheck) {
             showToast(responseBody['message']);
@@ -103,14 +101,11 @@ class _ProfileState extends State<Profile> {
         }
       } else {
         print('Error in status code');
-
         print(response.statusCode);
       }
     } catch (e) {
       print(e);
     }
-
-    //debugPrint(userData.toString());
     print(data);
   }
 
@@ -170,15 +165,20 @@ class _ProfileState extends State<Profile> {
                         )
                       },
                       cycles: 1,
-                      duration: Duration(milliseconds: 1500),
+                      duration: Duration(milliseconds: 1800),
                       builderMap: (Map<String, Animation> anim) =>
                           FadeTransition(
                         opacity: anim["opacity"],
                         child: FractionalTranslation(
                           translation: anim["translation"].value,
-                          child: FlutterLogo(
-                            size: 35,
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            size: 35.0,
+                            color: Colors.black,
                           ),
+                          // FlutterLogo(
+                          //   size: 35,
+                          // ),
                         ),
                       ),
                     ),

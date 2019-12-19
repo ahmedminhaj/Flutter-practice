@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pavilion/customWidget/customText.dart';
 import 'package:pavilion/customWidget/reviewButton.dart';
+import 'package:pavilion/navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
@@ -41,7 +42,7 @@ class _AttendanceState extends State<Attendance> {
         var responseBody = jsonDecode(response.body);
 
         if (responseBody['status']) {
-          print(responseBody);
+          //print(responseBody);
           data = json.decode(response.body);
           setState(() {
             userData = data["data"];
@@ -69,7 +70,7 @@ class _AttendanceState extends State<Attendance> {
     }
 
     //debugPrint(userData.toString());
-    print(data);
+    //print(data);
   }
 
   attendanceReview(var attendanceID) async {
@@ -92,6 +93,7 @@ class _AttendanceState extends State<Attendance> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        drawer: NavigationPage(),
         body: Column(
           children: <Widget>[
             Container(

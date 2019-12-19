@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
 
-class ReviewButton extends StatelessWidget {
+class AttendanceButton extends StatelessWidget {
+  final String inputText;
+  final onPressed;
   final shadow;
   final color;
-  final onPressed;
-  final buttonText;
 
-  ReviewButton({
-    this.buttonText,
-    this.color,
-    this.onPressed,
-    this.shadow,
-  });
+  AttendanceButton({this.color, this.inputText, this.onPressed, this.shadow});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 30,
-      width: 110,
       child: Material(
-        borderRadius: BorderRadius.circular(5.0),
+        borderRadius: BorderRadius.circular(30.0),
         shadowColor: shadow,
         color: color,
         elevation: 7.0,
@@ -26,11 +20,11 @@ class ReviewButton extends StatelessWidget {
           onPressed: onPressed,
           child: Center(
             child: Text(
-              buttonText,
+              inputText,
+              textAlign: TextAlign.center,
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.bold,
                   fontFamily: 'Poppins'),
             ),
           ),

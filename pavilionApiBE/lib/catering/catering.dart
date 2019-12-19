@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:pavilion/customWidget/customText.dart';
+import 'package:pavilion/navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
@@ -39,7 +40,7 @@ class _CateringState extends State<Catering> {
         var responseBody = jsonDecode(response.body);
 
         if (responseBody['status']) {
-          print(responseBody);
+          //print(responseBody);
           data = json.decode(response.body);
           setState(() {
             userData = data["data"];
@@ -79,7 +80,7 @@ class _CateringState extends State<Catering> {
         var responseBody = jsonDecode(response.body);
 
         if (responseBody['status']) {
-          print(responseBody);
+          //print(responseBody);
           data = json.decode(response.body);
           setState(() {
             cateringList();
@@ -112,6 +113,7 @@ class _CateringState extends State<Catering> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        drawer: NavigationPage(),
         body: Column(
           children: <Widget>[
             Container(
@@ -218,6 +220,7 @@ class _CateringState extends State<Catering> {
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.green[700],
+          elevation: 25.0,
           onPressed: () {
             Navigator.of(context).pushNamed('/mealOrder');
           },

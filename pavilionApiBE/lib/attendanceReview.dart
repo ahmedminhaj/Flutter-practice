@@ -18,7 +18,11 @@ class _AttendanceReviewState extends State<AttendanceReview> {
   static final TextEditingController _commentController =
       TextEditingController();
   String get comment => _commentController.text;
-  var attendanceID, attendanceExitTime, attendanceEntryTime, attendanceDate, token;
+  var attendanceID,
+      attendanceExitTime,
+      attendanceEntryTime,
+      attendanceDate,
+      token;
   Map data;
   List userData;
 
@@ -52,7 +56,8 @@ class _AttendanceReviewState extends State<AttendanceReview> {
       };
       try {
         var url = '$base_url/user/user_attendance_review';
-        var response = await http.post(url, headers: {HttpHeaders.authorizationHeader: token}, body: input);
+        var response = await http.post(url,
+            headers: {HttpHeaders.authorizationHeader: token}, body: input);
 
         if (response.statusCode == 200) {
           var responseBody = jsonDecode(response.body);
@@ -60,9 +65,14 @@ class _AttendanceReviewState extends State<AttendanceReview> {
           if (responseBody['status']) {
             var responseData = responseBody['message'];
 
-            print(responseData);
+            //print(responseData);
 
             showToast(responseBody['message']);
+            prefs.remove('attendance_id');
+            prefs.remove('attendance_entry_time');
+            prefs.remove('attendance_exit_time');
+            prefs.remove('attendance_date');
+            Navigator.popAndPushNamed(context, '/navigationPage');
           } else {
             if (responseBody['message'] == tokenDatabaseCheck ||
                 responseBody['message'] == tokenTimeCheck) {

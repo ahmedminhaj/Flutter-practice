@@ -11,7 +11,7 @@ class _NoticeMailState extends State<NoticeMail> {
     return Scaffold(
       body: Center(
         child: Text(
-          'Mail & Notice',
+          'under construction',
           style: TextStyle(
             color: Colors.black,
             fontFamily: 'Poppins',
