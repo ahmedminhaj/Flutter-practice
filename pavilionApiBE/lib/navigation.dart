@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pavilion/attendance.dart';
+import 'package:pavilion/attendance/attendance.dart';
 import 'package:pavilion/catering/catering.dart';
 import 'package:pavilion/home.dart';
 import 'package:pavilion/leaveManagement/leaveManagement.dart';
@@ -20,17 +20,17 @@ class NavigationPage extends StatefulWidget {
     DrawerItem('Catering', Icons.restaurant_menu),
     DrawerItem('Leave Management', Icons.directions_walk),
     DrawerItem('Reinbursment', Icons.library_add),
-    DrawerItem('Notification', Icons.notifications_active),
+    DrawerItem('Notification', Icons.notifications_active), 
   ];
-
+  
   @override
   _NavigationPageState createState() => _NavigationPageState();
 }
 
 class _NavigationPageState extends State<NavigationPage> {
-  int selectedIndex = 0;
+  int _selectedIndex = 0;
 
-  getDrawerItem(int pos) {
+  _getDrawerItem(int pos) {
     switch (pos) {
       case 0:
         return Home();
@@ -43,14 +43,14 @@ class _NavigationPageState extends State<NavigationPage> {
       case 4:
         return Reimbursment();
       case 5:
-        return NoticeMail();
+        return NoticeMail();  
       default:
         return Text('Error');
     }
   }
 
   _onSelectItem(int index) {
-    setState(() => selectedIndex = index);
+    setState(() => _selectedIndex = index);
     Navigator.of(context).pop();
   }
 
@@ -59,7 +59,6 @@ class _NavigationPageState extends State<NavigationPage> {
     getUserName();
     super.initState();
   }
-
   String userName = '';
   String userID = '';
   getUserName() async {
@@ -79,7 +78,7 @@ class _NavigationPageState extends State<NavigationPage> {
         ListTile(
           leading: Icon(d.icon),
           title: Text(d.title),
-          selected: i == selectedIndex,
+          selected: i == _selectedIndex,
           onTap: () => _onSelectItem(i),
         ),
       );
@@ -87,7 +86,7 @@ class _NavigationPageState extends State<NavigationPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.drawerItems[selectedIndex].title),
+        title: Text(widget.drawerItems[_selectedIndex].title),
         backgroundColor: Colors.green[700],
       ),
       drawer: Drawer(
@@ -111,14 +110,14 @@ class _NavigationPageState extends State<NavigationPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
-                    height: 8.0,
+                    height: 15.0,
                   ),
                   Text(
                     "teamPavilion",
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Poppins',
-                      fontSize: 26,
+                      fontSize: 32,
                     ),
                   ),
                   SizedBox(
@@ -129,11 +128,12 @@ class _NavigationPageState extends State<NavigationPage> {
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Poppins',
-                      fontSize: 20,
+                      fontSize: 25,
                     ),
                   ),
                   InkWell(
                     onTap: () {
+                      
                       Navigator.of(context).pushNamed('/profile');
                     },
                     child: Text(
@@ -154,8 +154,8 @@ class _NavigationPageState extends State<NavigationPage> {
           ],
         ),
       ),
-      body: getDrawerItem(
-        selectedIndex,
+      body: _getDrawerItem(
+        _selectedIndex,
       ),
     );
   }

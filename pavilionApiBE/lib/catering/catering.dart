@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:pavilion/customWidget/customText.dart';
-import 'package:pavilion/navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
@@ -113,7 +112,6 @@ class _CateringState extends State<Catering> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        drawer: NavigationPage(),
         body: Column(
           children: <Widget>[
             Container(

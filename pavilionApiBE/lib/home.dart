@@ -31,8 +31,8 @@ class _HomeState extends State<Home> {
   String meal = "";
   String entry = "";
   String exit = "";
-  String entryMsg = "Please tap the 'Entry Time' button.";
-  String exitMsg = "Tap the 'Exit Time' button before leave the office.";
+  // String entryMsg = "Please tap the 'Entry Time' button.";
+  // String exitMsg = "Tap the 'Exit Time' button before leave the office.";
 
   getUserFromSP() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -72,8 +72,8 @@ class _HomeState extends State<Home> {
           setState(() {
             email = responseData['email'];
             meal = responseData['meal'] != null ? "Placed" : "Not Placed";
-            entry = responseData['entry_time'] ?? entryMsg;
-            exit = responseData['exit_time'] ?? exitMsg;
+            entry = responseData['entry_time'] ?? "0";
+            exit = responseData['exit_time'] ?? "0";
           });
           print(responseBody);
         } else {
@@ -182,7 +182,7 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 3.9,
+              height: MediaQuery.of(context).size.height / 3.4,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -211,7 +211,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   SizedBox(
-                    width: 15.2,
+                    width: 18,
                   ),
                   Container(
                     child: Column(
@@ -236,12 +236,12 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 10.0,
-            ),
+            // SizedBox(
+            //   height: 2.0,
+            // ),
             Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 1.6,
+              height: MediaQuery.of(context).size.height / 1.7,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -280,126 +280,166 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 10.0,
                   ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Colors.grey[200],
-                          Colors.grey[300],
-                        ],
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        meal == "Not Placed"
-                            ? Column(
-                                children: <Widget>[
-                                  CustomText(
-                                    inputText: "Order your today's meal",
-                                    textColor: Colors.black,
-                                  ),
-                                  SizedBox(
-                                    height: 10.0,
-                                  ),
-                                  SubmitButton(
-                                    buttonTitle: "Order meal",
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pushNamed('/mealOrder');
-                                    },
-                                  ),
-                                ],
-                              )
-                            : CustomText(
-                                inputText: "Your today's meal is $meal",
-                                textColor: Colors.black,
-                              )
-                      ],
-                    ),
-                  ),
+                  meal == "Not Placed"
+                      ? Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: RaisedButton(
+                            color: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0)),
+                            elevation: 4.0,
+                            onPressed: () {
+                              Navigator.of(context).pushNamed('/mealOrder');
+                            },
+                            child: CustomText(
+                              inputText: "Place your today's meal",
+                              textColor: Colors.white,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                Colors.grey[200],
+                                Colors.grey[300],
+                              ],
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5),
+                            ),
+                          ),
+                          child: CustomText(
+                            inputText: "Your today's meal is $meal",
+                            textColor: Colors.black,
+                            align: TextAlign.center,
+                          ),
+                        ),
                   SizedBox(
                     height: 10.0,
                   ),
                   Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Colors.grey[200],
-                          Colors.grey[300],
-                        ],
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5),
-                      ),
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          entry == entryMsg
-                              ? "$entryMsg"
-                              : "Your entry time is $entry",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Poppins',
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w400,
-                            //letterSpacing: 1.1,
-                          ),
-                        ),
-                        entry != entryMsg
-                            ? Text(
-                                exit == exitMsg
-                                    ? "$exitMsg"
-                                    : "Your exit time is $exit",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Poppins',
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.w400,
-                                  //letterSpacing: 1.1,
+                    width: MediaQuery.of(context).size.width,
+                    child: entry == "0"
+                        ? RaisedButton(
+                            color: Colors.blue[700],
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0)),
+                            elevation: 4.0,
+                            onPressed: entryTime,
+                            child: CustomText(
+                              inputText: "Press to add today's entry time",
+                              textColor: Colors.white,
+                            ),
+                          )
+                        : Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomLeft,
+                                colors: [
+                                  Colors.grey[200],
+                                  Colors.grey[300],
+                                ],
+                              ),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5),
+                              ),
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                CustomText(
+                                  inputText: "Your today's entry time $entry",
+                                  textColor: Colors.black,
+                                  align: TextAlign.center,
                                 ),
-                              )
-                            : Text(""),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            entry == entryMsg
-                                ? AttendanceButton(
-                                    inputText: "Entry Time",
-                                    color: Colors.green[600],
-                                    shadow: Colors.greenAccent,
-                                    onPressed: entryTime,
-                                  )
-                                : Container(),
-                            entry != entryMsg && exit == exitMsg
-                                ? AttendanceButton(
-                                    inputText: "Exit Time",
-                                    color: Colors.red[400],
-                                    shadow: Colors.red[300],
-                                    onPressed: exitTime,
-                                  )
-                                : Container(),
-                          ],
-                        ),
-                      ],
-                    ),
+                                exit == "0"
+                                    ? RaisedButton(
+                                        color: Colors.blue[700],
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0)),
+                                        elevation: 4.0,
+                                        onPressed: exitTime,
+                                        child: CustomText(
+                                          inputText:
+                                              "Press to add today's exit time",
+                                          textColor: Colors.white,
+                                        ),
+                                      )
+                                    : CustomText(
+                                        inputText:
+                                            "Your today's exit time $exit",
+                                        textColor: Colors.black,
+                                        align: TextAlign.center,
+                                      )
+                              ],
+                            ),
+                          ),
+                    // Column(
+                    //   children: <Widget>[
+                    //     Text(
+                    //       entry == entryMsg
+                    //           ? "$entryMsg"
+                    //           : "Your entry time is $entry",
+                    //       style: TextStyle(
+                    //         color: Colors.black,
+                    //         fontFamily: 'Poppins',
+                    //         fontSize: 20.0,
+                    //         fontWeight: FontWeight.w400,
+                    //         //letterSpacing: 1.1,
+                    //       ),
+                    //     ),
+                    //     entry != entryMsg
+                    //         ? Text(
+                    //             exit == exitMsg
+                    //                 ? "$exitMsg"
+                    //                 : "Your exit time is $exit",
+                    //             textAlign: TextAlign.center,
+                    //             style: TextStyle(
+                    //               color: Colors.black,
+                    //               fontFamily: 'Poppins',
+                    //               fontSize: 20.0,
+                    //               fontWeight: FontWeight.w400,
+                    //               //letterSpacing: 1.1,
+                    //             ),
+                    //           )
+                    //         : Text(""),
+                    //     SizedBox(
+                    //       height: 10.0,
+                    //     ),
+                    //     Row(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: <Widget>[
+                    //         entry == entryMsg
+                    //             ? AttendanceButton(
+                    //                 inputText: "Entry Time",
+                    //                 color: Colors.green[600],
+                    //                 shadow: Colors.greenAccent,
+                    //                 onPressed: entryTime,
+                    //               )
+                    //             : Container(),
+                    //         entry != entryMsg && exit == exitMsg
+                    //             ? AttendanceButton(
+                    //                 inputText: "Exit Time",
+                    //                 color: Colors.red[400],
+                    //                 shadow: Colors.red[300],
+                    //                 onPressed: exitTime,
+                    //               )
+                    //             : Container(),
+                    //       ],
+                    //     ),
+                    //   ],
+                    // ),
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: 30.0,
                   ),
                 ],
               ),

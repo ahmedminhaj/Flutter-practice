@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pavilion/attendanceReview.dart';
+import 'package:pavilion/attendance/attendanceReview.dart';
 import 'package:pavilion/leaveManagement/riseOvertime.dart';
 import 'package:pavilion/leaveManagement/takeLeave.dart';
 import 'package:pavilion/navigation.dart';

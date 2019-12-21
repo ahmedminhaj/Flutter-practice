@@ -9,11 +9,14 @@ import 'package:pavilion/api/global.dart';
 import 'dart:convert';
 
 class Profile extends StatefulWidget {
+  //static String routeName;
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  //static String routeName = '/profile';
+
   String userID = " ";
   var data, token;
   var userData;
