@@ -13,6 +13,7 @@ class _LogInPageState extends State<LogInPage> {
   final formKey = GlobalKey<FormState>();
   String _email, _password;
   bool passwordVisible;
+  bool isLoading;
 
   @override
   void initState() {
@@ -50,8 +51,14 @@ class _LogInPageState extends State<LogInPage> {
             prefs.setString('token', responseData['token']);
             print(responseData);
             // Navigate to homepage
-            Navigator.of(context).pushNamed('/navigationPage');
+            //Navigator.of(context).pushNamed('/navigationPage');
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/navigationPage', (Route<dynamic> route) => false);
+            setState(() {
+              isLoading = false;
+            });
           } else {
+            showToast(responseBody['message']);
             print(responseBody);
           }
         } else {
@@ -134,7 +141,7 @@ class _LogInPageState extends State<LogInPage> {
                     TextFormField(
                       onSaved: (input) => _email = input,
                       decoration: InputDecoration(
-                        labelText: 'EMAIL',
+                        labelText: 'EMAIL OR USERNAME',
                         labelStyle: TextStyle(
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.bold,
@@ -143,8 +150,8 @@ class _LogInPageState extends State<LogInPage> {
                           borderSide: BorderSide(color: Colors.green),
                         ),
                       ),
-                      validator: (input) =>
-                          !input.contains('@') ? 'Not a valid Email' : null,
+                      // validator: (input) =>
+                      //     !input.contains('@') ? 'Not a valid Email' : null,
                     ),
                     SizedBox(
                       height: 20.0,
@@ -190,7 +197,12 @@ class _LogInPageState extends State<LogInPage> {
                         color: Colors.green,
                         elevation: 7.0,
                         child: FlatButton(
-                          onPressed: login,
+                          onPressed: () {
+                            // setState(() {
+                            //   isLoading = true;
+                            // });
+                            login();
+                          },
                           child: Center(
                             child: Text(
                               'LOGIN',

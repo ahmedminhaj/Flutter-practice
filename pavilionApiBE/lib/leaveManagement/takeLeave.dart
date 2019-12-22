@@ -30,6 +30,7 @@ class _TakeLeaveState extends State<TakeLeave> {
   String userID;
   Map data;
   List userData;
+  bool isLoading = false;
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
   String get comment => _commentController.text;
@@ -65,6 +66,7 @@ class _TakeLeaveState extends State<TakeLeave> {
 
             showToast(responseBody['message']);
             //Navigator.of(context).PushNamed('/catering');
+            isLoading = false;
             Navigator.popAndPushNamed(context, '/navigationPage');
           } else {
             if (responseBody['message'] == tokenDatabaseCheck ||
@@ -180,7 +182,12 @@ class _TakeLeaveState extends State<TakeLeave> {
                     height: 50.0,
                   ),
                   SubmitButton(
-                    onPressed: takeLeave,
+                    onPressed: (){
+                      setState(() {
+                        isLoading = true;
+                      });
+                      takeLeave();
+                    },
                     buttonTitle: "Submit",
                   ),
                   SizedBox(

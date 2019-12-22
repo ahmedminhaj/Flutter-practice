@@ -48,27 +48,27 @@ class _ResetPasswordState extends State<ResetPassword> {
 
       try {
         var url = '$base_url/user/change_password';
-        http.Response response = await http.post(url,  headers: {HttpHeaders.authorizationHeader: token}, body: inputPass);
+        http.Response response = await http.post(url,
+            headers: {HttpHeaders.authorizationHeader: token}, body: inputPass);
 
         if (response.statusCode == 200) {
           var responseBody = jsonDecode(response.body);
           if (responseBody['status']) {
-
             prefs.clear();
             showToast(responseBody['message']);
 
             //Navigator.of(context).pushNamed('/logIn');
-            Navigator.of(context).pushNamedAndRemoveUntil('/logIn', (Route<dynamic> route) => false);
-            
-          } else {
-            if (responseBody['message'] == tokenDatabaseCheck ||
-              responseBody['message'] == tokenTimeCheck) {
-            showToast(responseBody['message']);
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/logIn', (Route<dynamic> route) => false);
           } else {
-            showToast(responseBody['message']);
-          }
+            if (responseBody['message'] == tokenDatabaseCheck ||
+                responseBody['message'] == tokenTimeCheck) {
+              showToast(responseBody['message']);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/logIn', (Route<dynamic> route) => false);
+            } else {
+              showToast(responseBody['message']);
+            }
           }
         } else {
           print('Error in status code');
@@ -104,7 +104,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 5,
+                        height: MediaQuery.of(context).size.height / 4,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
@@ -147,9 +147,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
-                            SizedBox(
-                              width: 5.5,
-                            ),
                             Text(
                               "$userDepartment",
                               style: TextStyle(
@@ -159,13 +156,16 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
+                            SizedBox(
+                              height: 30.1,
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
                   Container(
-                    padding: EdgeInsets.fromLTRB(0, 105, 0, 0),
+                    padding: EdgeInsets.fromLTRB(0, 115, 0, 0),
                     alignment: Alignment.topCenter,
                     child: Container(
                       width: 80.0,

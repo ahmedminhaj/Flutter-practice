@@ -60,7 +60,7 @@ class _EditProfileState extends State<EditProfile> {
 
   Future<bool> getUserProfileSP() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    userName = prefs.getString('users_username');
     name = prefs.getString('user_full_name') ?? '';
     address = prefs.getString('user_permanent_address') ?? '';
     contactNumber = prefs.getString('user_contact_no') ?? '';
@@ -147,7 +147,7 @@ class _EditProfileState extends State<EditProfile> {
                           children: <Widget>[
                             Container(
                               width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height / 5,
+                              height: MediaQuery.of(context).size.height / 4,
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   begin: Alignment.topCenter,
@@ -172,7 +172,7 @@ class _EditProfileState extends State<EditProfile> {
                                 children: <Widget>[
                                   Container(
                                     child: Text(
-                                      '$name',
+                                      '$userName',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontFamily: 'Poppins',
@@ -190,9 +190,7 @@ class _EditProfileState extends State<EditProfile> {
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 5.5,
-                                  ),
+                                  
                                   Text(
                                     "$department",
                                     style: TextStyle(
@@ -202,13 +200,16 @@ class _EditProfileState extends State<EditProfile> {
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
+                                  SizedBox(
+                                    height: 30.1,
+                                  ),
                                 ],
                               ),
                             ),
                           ],
                         ),
                         Container(
-                          padding: EdgeInsets.fromLTRB(0, 105, 0, 0),
+                          padding: EdgeInsets.fromLTRB(0, 115, 0, 0),
                           alignment: Alignment.topCenter,
                           child: Container(
                             width: 80.0,

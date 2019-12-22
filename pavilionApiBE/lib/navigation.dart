@@ -110,25 +110,25 @@ class _NavigationPageState extends State<NavigationPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
-                    height: 15.0,
+                    height: 10.0,
                   ),
                   Text(
                     "teamPavilion",
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Poppins',
-                      fontSize: 32,
+                      fontSize: 30,
                     ),
                   ),
                   SizedBox(
-                    height: 15.0,
+                    height: 5.0,
                   ),
                   Text(
                     "$userName",
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Poppins',
-                      fontSize: 25,
+                      fontSize: 22,
                     ),
                   ),
                   InkWell(

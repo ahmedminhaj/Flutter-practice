@@ -18,10 +18,20 @@ dependencies:
   date_range_picker: ^1.0.5
   intl: ^0.16.0
   animator: ^1.0.0+3
+  flutter_launcher_icons: ^0.7.4
+  flutter_spinkit: "^4.1.1"
+  loading: ^1.0.2
+  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
+
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "assets/image/logo.png"
 
 flutter:
   

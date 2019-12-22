@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:pavilion/customWidget/customText.dart';
+import 'package:pavilion/customWidget/loadingPage.dart';
 import 'package:pavilion/customWidget/reviewButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +20,7 @@ class _AttendanceState extends State<Attendance> {
   List userData;
   var attendanceId;
   var token;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -45,6 +47,7 @@ class _AttendanceState extends State<Attendance> {
           data = json.decode(response.body);
           setState(() {
             userData = data["data"];
+            isLoading = false;
           });
         } else {
           //print('status false');
@@ -89,10 +92,10 @@ class _AttendanceState extends State<Attendance> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Column(
+      home:  Scaffold(
+        body:  Column(
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
@@ -140,7 +143,7 @@ class _AttendanceState extends State<Attendance> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
+              child: isLoading ? LoadingPage() : ListView.builder(
                 itemCount: userData == null ? 0 : userData.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(

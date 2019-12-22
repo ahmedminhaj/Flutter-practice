@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:pavilion/customWidget/commentBox.dart';
 import 'package:pavilion/customWidget/dateRangeBox.dart';
 import 'package:pavilion/customWidget/headerContainer.dart';
+import 'package:pavilion/customWidget/loadingPage.dart';
 import 'package:pavilion/customWidget/submitButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -31,6 +32,7 @@ class _MealOrderState extends State<MealOrder> {
   String userID, token;
   Map data;
   List userData;
+  bool isLoading = false;
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
   String get comment => _commentController.text;
@@ -65,6 +67,7 @@ class _MealOrderState extends State<MealOrder> {
 
             showToast(responseBody['message']);
             //Navigator.of(context).PushNamed('/catering');
+            isLoading = false;
             Navigator.popAndPushNamed(context, '/navigationPage');
           } else {
             if (responseBody['message'] == tokenDatabaseCheck ||
@@ -91,7 +94,7 @@ class _MealOrderState extends State<MealOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: isLoading ? LoadingPage() : SingleChildScrollView(
         child: Column(
           children: <Widget>[
             HeaderContainer(
@@ -183,7 +186,12 @@ class _MealOrderState extends State<MealOrder> {
                     height: 50.0,
                   ),
                   SubmitButton(
-                    onPressed: mealOrder,
+                    onPressed: (){
+                      setState(() {
+                        isLoading = true;
+                      });
+                      mealOrder();
+                    },
                     buttonTitle: "Order Now",
                   ),
                   SizedBox(

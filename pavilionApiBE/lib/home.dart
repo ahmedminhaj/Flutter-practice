@@ -2,9 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pavilion/customWidget/attendanceButton.dart';
 import 'package:pavilion/customWidget/customText.dart';
-import 'package:pavilion/customWidget/submitButton.dart';
+import 'package:pavilion/customWidget/loadingPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pavilion/api/global.dart';
 
@@ -22,6 +21,7 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
+  bool isLoading = false;
   String userName = "";
   String userDesignation = "";
   String userDepartment = "";
@@ -43,6 +43,7 @@ class _HomeState extends State<Home> {
       userDepartment = prefs.getString('user_department') ?? '';
       userID = prefs.getString('user_id') ?? '';
       token = prefs.getString('token') ?? '';
+      isLoading = true;
     });
 
     if (userID == '' && userName == '') {
@@ -74,6 +75,7 @@ class _HomeState extends State<Home> {
             meal = responseData['meal'] != null ? "Placed" : "Not Placed";
             entry = responseData['entry_time'] ?? "0";
             exit = responseData['exit_time'] ?? "0";
+            isLoading = false;
           });
           print(responseBody);
         } else {
@@ -176,7 +178,7 @@ class _HomeState extends State<Home> {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat("EEEEEEEEEEE,  d MMMM y").format(now);
     return Scaffold(
-      body: SingleChildScrollView(
+      body: isLoading ? LoadingPage() : SingleChildScrollView(
         child: Column(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -330,7 +332,12 @@ class _HomeState extends State<Home> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0)),
                             elevation: 4.0,
-                            onPressed: entryTime,
+                            onPressed: (){
+                              setState(() {
+                                isLoading = true;
+                              });
+                              entryTime();
+                            },
                             child: CustomText(
                               inputText: "Press to add today's entry time",
                               textColor: Colors.white,
@@ -366,7 +373,13 @@ class _HomeState extends State<Home> {
                                             borderRadius:
                                                 BorderRadius.circular(5.0)),
                                         elevation: 4.0,
-                                        onPressed: exitTime,
+                                        onPressed: (){
+                                          setState(() {
+                                            isLoading =true;
+
+                                          });
+                                          exitTime();
+                                        },
                                         child: CustomText(
                                           inputText:
                                               "Press to add today's exit time",

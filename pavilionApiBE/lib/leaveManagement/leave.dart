@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:pavilion/customWidget/customText.dart';
+import 'package:pavilion/customWidget/loadingPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
@@ -17,6 +18,7 @@ class _LeaveState extends State<Leave> {
   Map data;
   List userData;
   var token;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -45,6 +47,7 @@ class _LeaveState extends State<Leave> {
           data = json.decode(response.body);
           setState(() {
             userData = data["data"];
+            isLoading = false;
           });
         } else {
           //print('status false');
@@ -134,7 +137,7 @@ class _LeaveState extends State<Leave> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
+              child: isLoading ? LoadingPage() : ListView.builder(
                 itemCount: userData == null ? 0 : userData.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(

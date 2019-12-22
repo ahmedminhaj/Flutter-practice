@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:animator/animator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:pavilion/customWidget/loadingPage.dart';
 import 'package:pavilion/customWidget/profileInfoCard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -20,6 +21,7 @@ class _ProfileState extends State<Profile> {
   String userID = " ";
   var data, token;
   var userData;
+  bool isLoading = true;
   String email = " ",
       name = " ",
       personalEmail = " ",
@@ -32,7 +34,8 @@ class _ProfileState extends State<Profile> {
       emergencyContact = " ",
       relation = " ",
       bankAccount = " ",
-      department = " ";
+      department = " ",
+      userName = " ";
 
   @override
   void initState() {
@@ -77,6 +80,7 @@ class _ProfileState extends State<Profile> {
               userData['relation_with_emergency_contact']);
 
           setState(() {
+            userName = prefs.getString('users_username');
             email = prefs.getString('user_email') ?? '';
             name = prefs.getString('user_full_name') ?? '';
             personalEmail = prefs.getString('user_personal_email') ?? '';
@@ -91,6 +95,7 @@ class _ProfileState extends State<Profile> {
             department = prefs.getString('user_department_name') ?? '';
             relation =
                 prefs.getString('user_relation_with_emergency_contact') ?? '';
+            isLoading = false;
           });
         } else {
           if (responseBody['message'] == tokenDatabaseCheck ||
@@ -119,7 +124,7 @@ class _ProfileState extends State<Profile> {
         backgroundColor: Colors.green[700],
         title: Text("Profile"),
       ),
-      body: SingleChildScrollView(
+      body: isLoading ? LoadingPage() : SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Slidable(
@@ -187,7 +192,7 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   title: Text(
-                    '$name',
+                    '$userName',
                     style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 18,

@@ -28,6 +28,7 @@ class _RiseOvertimeState extends State<RiseOvertime> {
   Map data;
   List userData;
   var token;
+  bool isLoading = false;
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
   String get comment => _commentController.text;
@@ -60,6 +61,7 @@ class _RiseOvertimeState extends State<RiseOvertime> {
 
             showToast(responseBody['message']);
             //Navigator.of(context).PushNamed('/catering');
+            isLoading = false;
             Navigator.popAndPushNamed(context, '/navigationPage');
           } else {
             if (responseBody['message'] == tokenDatabaseCheck ||
@@ -133,7 +135,12 @@ class _RiseOvertimeState extends State<RiseOvertime> {
                     height: 50.0,
                   ),
                   SubmitButton(
-                    onPressed: riseOvertime,
+                    onPressed: (){
+                      setState(() {
+                        isLoading = true;
+                      });
+                      riseOvertime();
+                    },
                     buttonTitle: "Submit",
                   ),
                   SizedBox(
