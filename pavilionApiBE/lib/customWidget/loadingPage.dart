@@ -7,9 +7,9 @@ class LoadingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Colors.green[600],
+        color: Colors.white,
         child: Center(
-          child: Loading(indicator: BallPulseIndicator(), size: 100.0,color: Colors.white),
+          child: Loading(indicator: BallPulseIndicator(), size: 100.0,color: Colors.green[600]),
         ),
       );
   }

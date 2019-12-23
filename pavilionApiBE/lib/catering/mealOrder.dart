@@ -62,12 +62,12 @@ class _MealOrderState extends State<MealOrder> {
 
           if (responseBody['status']) {
             var responseData = responseBody['message'];
-
             print(responseData);
-
             showToast(responseBody['message']);
             //Navigator.of(context).PushNamed('/catering');
-            isLoading = false;
+            setState(() {
+              isLoading = false;
+            });
             Navigator.popAndPushNamed(context, '/navigationPage');
           } else {
             if (responseBody['message'] == tokenDatabaseCheck ||
@@ -77,6 +77,10 @@ class _MealOrderState extends State<MealOrder> {
                   '/logIn', (Route<dynamic> route) => false);
             } else {
               showToast(responseBody['message']);
+
+              setState(() {
+                isLoading = false;
+              });
             }
           }
         } else {
@@ -94,115 +98,119 @@ class _MealOrderState extends State<MealOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isLoading ? LoadingPage() : SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            HeaderContainer(
-              headerIcon: Icons.restaurant_menu,
-              headerTitle: "Meal Order",
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 100.0, left: 30.0, right: 30.0),
+      body: isLoading
+          ? LoadingPage()
+          : SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                  HeaderContainer(
+                    headerIcon: Icons.restaurant_menu,
+                    headerTitle: "Meal Order",
+                  ),
+                  Container(
+                    padding:
+                        EdgeInsets.only(top: 100.0, left: 30.0, right: 30.0),
+                    child: Column(
+                      children: <Widget>[
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          elevation: 4.0,
+                          onPressed: () async {
+                            //var _date;
+                            final List<DateTime> picked =
+                                await DateRagePicker.showDatePicker(
+                              context: context,
+                              initialFirstDate: startDateT == null
+                                  ? DateTime.now()
+                                  : startDateT,
+                              initialLastDate:
+                                  endDateT == null ? DateTime.now() : endDateT,
+                              /*firstDate: DateTime(2000),*/
+                              firstDate: DateTime(DateTime.now().year,
+                                  DateTime.now().month, DateTime.now().day),
+                              lastDate: DateTime(3100),
+                              // initialDatePickerMode:
+                              // DateRagePicker.DatePickerMode.day,
+                            );
+                            if (picked != null) {
+                              print(picked);
+
+                              if (picked.length > 1) {
+                                if ((picked[0].day == picked[1].day) &&
+                                    (picked[0].month == picked[1].month) &&
+                                    (picked[0].year == picked[1].year)) {
+                                  _date =
+                                      "${picked[0].day}-${picked[0].month}-${picked[0].year}";
+                                  startDateT = picked[0];
+                                  endDateT = picked[0];
+                                } else {
+                                  _date =
+                                      "${picked[0].day}-${picked[0].month}-${picked[0].year} to ${picked[1].day}-${picked[1].month}-${picked[1].year}";
+                                  startDateT = picked[0];
+                                  endDateT = picked[1];
+                                }
+                              } else {
+                                _date =
+                                    "${picked[0].day}-${picked[0].month}-${picked[0].year}";
+                                startDateT = picked[0];
+                                endDateT = picked[0];
+                              }
+
+                              print(_date);
+                              setState(() {
+                                showDate = _date;
+                                // startDateT = picked[0];
+                                // endDateT = picked[1] == null ? picked[0] : picked[1];
+
+                                final dateToGenerate =
+                                    endDateT.difference(startDateT).inDays;
+                                dateRange = List.generate(
+                                  dateToGenerate + 1,
+                                  (i) => dateFormat.format(DateTime(
+                                      startDateT.year,
+                                      startDateT.month,
+                                      startDateT.day + (i))),
+                                );
+                              });
+                              print(dateRange);
+                            }
+                          },
+                          child: DateRangeBox(
+                            showDateRange: showDate,
+                            boxLabel: " Pick a date or date range",
+                          ),
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        CommentBox(
+                          commentController: _commentController,
+                          boxLabel: "Any specification",
+                        ),
+                        SizedBox(
+                          height: 50.0,
+                        ),
+                        SubmitButton(
+                          onPressed: () {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            mealOrder();
+                          },
+                          buttonTitle: "Order Now",
+                        ),
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                      ],
                     ),
-                    elevation: 4.0,
-                    onPressed: () async {
-                      //var _date;
-                      final List<DateTime> picked =
-                          await DateRagePicker.showDatePicker(
-                        context: context,
-                        initialFirstDate:
-                            startDateT == null ? DateTime.now() : startDateT,
-                        initialLastDate:
-                            endDateT == null ? DateTime.now() : endDateT,
-                        /*firstDate: DateTime(2000),*/
-                        firstDate: DateTime(DateTime.now().year,
-                            DateTime.now().month, DateTime.now().day),
-                        lastDate: DateTime(3100),
-                        // initialDatePickerMode:
-                        // DateRagePicker.DatePickerMode.day,
-                      );
-                      if (picked != null) {
-                        print(picked);
-
-                        if (picked.length > 1) {
-                          if ((picked[0].day == picked[1].day) &&
-                              (picked[0].month == picked[1].month) &&
-                              (picked[0].year == picked[1].year)) {
-                            _date =
-                                "${picked[0].day}-${picked[0].month}-${picked[0].year}";
-                            startDateT = picked[0];
-                            endDateT = picked[0];
-                          } else {
-                            _date =
-                                "${picked[0].day}-${picked[0].month}-${picked[0].year} to ${picked[1].day}-${picked[1].month}-${picked[1].year}";
-                            startDateT = picked[0];
-                            endDateT = picked[1];
-                          }
-                        } else {
-                          _date =
-                              "${picked[0].day}-${picked[0].month}-${picked[0].year}";
-                          startDateT = picked[0];
-                          endDateT = picked[0];
-                        }
-
-                        print(_date);
-                        setState(() {
-                          showDate = _date;
-                          // startDateT = picked[0];
-                          // endDateT = picked[1] == null ? picked[0] : picked[1];
-
-                          final dateToGenerate =
-                              endDateT.difference(startDateT).inDays;
-                          dateRange = List.generate(
-                            dateToGenerate + 1,
-                            (i) => dateFormat.format(DateTime(startDateT.year,
-                                startDateT.month, startDateT.day + (i))),
-                          );
-                        });
-                        print(dateRange);
-                      }
-                    },
-                    child: 
-                    DateRangeBox(
-                      showDateRange: showDate,
-                      boxLabel: " Pick a date or date range",
-                    ),
-                    
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  CommentBox(
-                    commentController: _commentController,
-                    boxLabel: "Any specification",
-                  ),
-                  SizedBox(
-                    height: 50.0,
-                  ),
-                  SubmitButton(
-                    onPressed: (){
-                      setState(() {
-                        isLoading = true;
-                      });
-                      mealOrder();
-                    },
-                    buttonTitle: "Order Now",
-                  ),
-                  SizedBox(
-                    height: 30.0,
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

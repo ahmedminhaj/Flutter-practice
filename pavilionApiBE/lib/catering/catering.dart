@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pavilion/customWidget/customText.dart';
 import 'package:pavilion/customWidget/loadingPage.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
@@ -57,6 +58,9 @@ class _CateringState extends State<Catering> {
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/logIn', (Route<dynamic> route) => false);
           } else {
+            setState(() {
+              isLoading = false;
+            });
             showToast(responseBody['message']);
           }
         }
@@ -163,59 +167,88 @@ class _CateringState extends State<Catering> {
               ),
             ),
             Expanded(
-              child: isLoading ? LoadingPage() : ListView.builder(
-                itemCount: userData == null ? 0 : userData.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 0.0),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Colors.grey[200],
-                          Colors.grey[300],
-                        ],
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5.0),
-                      ),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        CustomText(
-                          inputText: " ${userData[index]["date"]}",
-                          textColor: Colors.black,
-                        ),
-                        CustomText(
-                          inputText: " ${userData[index]["day"]}",
-                          textColor: Colors.black,
-                        ),
-                        Container(
-                          child: InkWell(
-                            onTap: () {
-                              String id = '${userData[index]["id"]}';
-                              deleteMeal(id);
-                            },
-                            child: Text(
-                              'Cancel',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontFamily: 'Poppins',
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.w600,
-                              ),
+              child: isLoading
+                  ? LoadingPage()
+                  : ListView.builder(
+                      itemCount: userData == null ? 0 : userData.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          margin: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 0.0),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.grey[200],
+                                Colors.grey[300],
+                              ],
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5.0),
                             ),
                           ),
-                        ),
-                      ],
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              CustomText(
+                                inputText: " ${userData[index]["date"]}",
+                                textColor: Colors.black,
+                              ),
+                              CustomText(
+                                inputText: " ${userData[index]["day"]}",
+                                textColor: Colors.black,
+                              ),
+                              Container(
+                                child: InkWell(
+                                  onTap: () {
+                                    String id = '${userData[index]["id"]}';
+                                    // Alert(
+                                    //   context: context,
+                                    //   type: AlertType.error,
+                                    //   title: "Meal Cancelation",
+                                    //   desc: "Do you want to cancel you Meal?",
+                                    //   buttons: [
+                                    //     DialogButton(
+                                    //       child: Text(
+                                    //         "Confirm",
+                                    //         style: TextStyle(
+                                    //             color: Colors.white,
+                                    //             fontSize: 20),
+                                    //       ),
+                                    //       onPressed: () 
+                                    //       {
+                                    //         deleteMeal(id);
+                                    //         //Navigator.pop(context);
+                                    //         setState(() {
+                                    //           isLoading = true;
+                                    //         });
+                                    //       },
+                                    //     )
+                                    //   ],
+                                    // ).show();
+                                    deleteMeal(id);
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                  },
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontFamily: 'Poppins',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ],
         ),

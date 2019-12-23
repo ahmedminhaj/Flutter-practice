@@ -59,6 +59,9 @@ class _AttendanceState extends State<Attendance> {
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/logIn', (Route<dynamic> route) => false);
           } else {
+            setState(() {
+              isLoading = false;
+            });
             showToast(responseBody['message']);
           }
         }
@@ -92,10 +95,10 @@ class _AttendanceState extends State<Attendance> {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:  Scaffold(
-        body:  Column(
+      home: Scaffold(
+        body: Column(
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
@@ -143,95 +146,97 @@ class _AttendanceState extends State<Attendance> {
               ),
             ),
             Expanded(
-              child: isLoading ? LoadingPage() : ListView.builder(
-                itemCount: userData == null ? 0 : userData.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: EdgeInsets.fromLTRB(5.0, 3.0, 5.0, 0.0),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Colors.grey[200],
-                          Colors.grey[300],
-                        ],
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5.0),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "${userData[index]["date"]}",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+              child: isLoading
+                  ? LoadingPage()
+                  : ListView.builder(
+                      itemCount: userData == null ? 0 : userData.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          margin: EdgeInsets.fromLTRB(5.0, 3.0, 5.0, 0.0),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.grey[200],
+                                Colors.grey[300],
+                              ],
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5.0),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Entry: ${userData[index]["entry_time"]}",
+                                "${userData[index]["date"]}",
                                 style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 17.0,
+                                    fontFamily: 'Poppins',
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Entry: ${userData[index]["entry_time"]}",
+                                      style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    Text(
+                                      "Exit: ${userData[index]["exit_time"]}",
+                                      style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Text(
-                                "Exit: ${userData[index]["exit_time"]}",
-                                style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 17.0,
-                                ),
-                              ),
+                              userData[index]["status"] != '0'
+                                  ? ReviewButton(
+                                      shadow: Colors.green,
+                                      color: Colors.green[600],
+                                      onPressed: () {
+                                        attendanceId = userData[index];
+                                        attendanceReview(attendanceId);
+                                      },
+                                      buttonText: "Review",
+                                    )
+                                  : ReviewButton(
+                                      shadow: Colors.grey,
+                                      color: Colors.grey[600],
+                                      onPressed: () {},
+                                      buttonText: "Pending",
+                                    )
+
+                              // Container(
+                              //     child: Text(
+                              //       userData[index]["status"] == '0'
+                              //           ? "Pending"
+                              //           : userData[index]["status"] == '1'
+                              //               ? "Accepted"
+                              //               : "Rejected",
+                              //       style: TextStyle(
+                              //           color: Colors.black,
+                              //           fontSize: 20.0,
+                              //           fontWeight: FontWeight.w400,
+                              //           fontFamily: 'Poppins'),
+                              //     ),
+                              //   ),
                             ],
                           ),
-                        ),
-                        userData[index]["status"] != '0'
-                            ? ReviewButton(
-                                shadow: Colors.green,
-                                color: Colors.green[600],
-                                onPressed: () {
-                                  attendanceId = userData[index];
-                                  attendanceReview(attendanceId);
-                                },
-                                buttonText: "Review",
-                              )
-                            : ReviewButton(
-                                shadow: Colors.grey,
-                                color: Colors.grey[600],
-                                onPressed: () {},
-                                buttonText: "Pending",
-                              )
-
-                        // Container(
-                        //     child: Text(
-                        //       userData[index]["status"] == '0'
-                        //           ? "Pending"
-                        //           : userData[index]["status"] == '1'
-                        //               ? "Accepted"
-                        //               : "Rejected",
-                        //       style: TextStyle(
-                        //           color: Colors.black,
-                        //           fontSize: 20.0,
-                        //           fontWeight: FontWeight.w400,
-                        //           fontFamily: 'Poppins'),
-                        //     ),
-                        //   ),
-                      ],
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ],
         ),
