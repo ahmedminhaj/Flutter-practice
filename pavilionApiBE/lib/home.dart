@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pavilion/customWidget/customText.dart';
+import 'package:pavilion/customWidget/homePageButton.dart';
 import 'package:pavilion/customWidget/loadingPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pavilion/api/global.dart';
@@ -36,7 +37,6 @@ class _HomeState extends State<Home> {
 
   getUserFromSP() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     setState(() {
       userName = prefs.getString('users_username') ?? '';
       userDesignation = prefs.getString('user_designation') ?? '';
@@ -45,7 +45,6 @@ class _HomeState extends State<Home> {
       token = prefs.getString('token') ?? '';
       isLoading = true;
     });
-
     if (userID == '' && userName == '') {
       Navigator.of(context)
           .pushNamedAndRemoveUntil('/logIn', (Route<dynamic> route) => false);
@@ -58,15 +57,12 @@ class _HomeState extends State<Home> {
     Map input = {
       'user_id': userID,
     };
-
     try {
       var url = '$base_url/user/user_today_info';
       var response = await http.post(url,
           headers: {HttpHeaders.authorizationHeader: token}, body: input);
-
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
-
         if (responseBody['status']) {
           var responseData = responseBody['data'];
           //print(responseData);
@@ -87,15 +83,9 @@ class _HomeState extends State<Home> {
           } else {
             showToast(responseBody['message']);
           }
-          // print('status false');
-          // print(responseBody);
-          // showToast(responseBody['message']);
-          // Navigator.of(context).pushNamedAndRemoveUntil(
-          //     '/logIn', (Route<dynamic> route) => false);
         }
       } else {
         print('Error in status code');
-
         print(response.statusCode);
       }
     } catch (e) {
@@ -107,15 +97,12 @@ class _HomeState extends State<Home> {
     Map input = {
       'user_id': userID,
     };
-
     try {
       var url = '$base_url/user/user_entry_time';
       var response = await http.post(url,
           headers: {HttpHeaders.authorizationHeader: token}, body: input);
-
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
-
         if (responseBody['status']) {
           showToast(responseBody['message']);
           loadingProfile();
@@ -142,15 +129,12 @@ class _HomeState extends State<Home> {
     Map input = {
       'user_id': userID,
     };
-
     try {
       var url = '$base_url/user/user_exit_time';
       var response = await http.post(url,
           headers: {HttpHeaders.authorizationHeader: token}, body: input);
-
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
-
         if (responseBody['status']) {
           showToast(responseBody['message']);
           loadingProfile();
@@ -240,9 +224,6 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
-                  // SizedBox(
-                  //   height: 2.0,
-                  // ),
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height / 1.7,
@@ -264,14 +245,7 @@ class _HomeState extends State<Home> {
                         Container(
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.white,
-                                Colors.white,
-                              ],
-                            ),
+                            color: Colors.white,
                             borderRadius: BorderRadius.all(
                               Radius.circular(5),
                             ),
@@ -287,33 +261,19 @@ class _HomeState extends State<Home> {
                         meal == "Not Placed"
                             ? Container(
                                 width: MediaQuery.of(context).size.width,
-                                child: RaisedButton(
-                                  color: Colors.blue,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0)),
-                                  elevation: 4.0,
+                                child: HomePageButton(
+                                  buttonText: "Place today's meal",
                                   onPressed: () {
                                     Navigator.of(context)
                                         .pushNamed('/mealOrder');
                                   },
-                                  child: CustomText(
-                                    inputText: "Place today's meal",
-                                    textColor: Colors.white,
-                                  ),
                                 ),
                               )
                             : Container(
                                 width: MediaQuery.of(context).size.width,
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomLeft,
-                                    colors: [
-                                      Colors.grey[200],
-                                      Colors.grey[300],
-                                    ],
-                                  ),
+                                  color: Colors.grey[300],
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(5),
                                   ),
@@ -330,34 +290,20 @@ class _HomeState extends State<Home> {
                         Container(
                           width: MediaQuery.of(context).size.width,
                           child: entry == "0"
-                              ? RaisedButton(
-                                  color: Colors.blue[700],
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0)),
-                                  elevation: 4.0,
+                              ? HomePageButton(
+                                  buttonText: "Press to add entry time",
                                   onPressed: () {
                                     setState(() {
                                       isLoading = true;
                                     });
                                     entryTime();
                                   },
-                                  child: CustomText(
-                                    inputText: "Press to add entry time",
-                                    textColor: Colors.white,
-                                  ),
                                 )
                               : Container(
                                   width: MediaQuery.of(context).size.width,
                                   padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomLeft,
-                                      colors: [
-                                        Colors.grey[200],
-                                        Colors.grey[300],
-                                      ],
-                                    ),
+                                    color: Colors.grey[300],
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(5),
                                     ),
@@ -370,24 +316,15 @@ class _HomeState extends State<Home> {
                                         align: TextAlign.center,
                                       ),
                                       exit == "0"
-                                          ? RaisedButton(
-                                              color: Colors.blue[700],
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          5.0)),
-                                              elevation: 4.0,
+                                          ? HomePageButton(
+                                              buttonText:
+                                                  "Press to add exit time",
                                               onPressed: () {
                                                 setState(() {
                                                   isLoading = true;
                                                 });
                                                 exitTime();
                                               },
-                                              child: CustomText(
-                                                inputText:
-                                                    "Press to add exit time",
-                                                textColor: Colors.white,
-                                              ),
                                             )
                                           : CustomText(
                                               inputText:

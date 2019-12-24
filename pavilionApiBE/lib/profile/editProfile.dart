@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pavilion/customWidget/customText.dart';
 import 'package:pavilion/customWidget/editProfileCard.dart';
+import 'package:pavilion/customWidget/profileHeader.dart';
 import 'package:pavilion/customWidget/submitButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -141,100 +142,10 @@ class _EditProfileState extends State<EditProfile> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height / 4,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Colors.green[700],
-                                    Colors.green[200],
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(300),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 10.0,
-                                    color: Colors.green[300],
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    child: Text(
-                                      '$userName',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Poppins',
-                                        fontSize: 22.0,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    "$designation",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Poppins',
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  
-                                  Text(
-                                    "$department",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Poppins',
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 30.1,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(0, 115, 0, 0),
-                          alignment: Alignment.topCenter,
-                          child: Container(
-                            width: 80.0,
-                            height: 80.0,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.all(
-                                  Radius.elliptical(10.0, 10.0)),
-                              image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/image/avater.jpg'),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 9.0,
-                                  color: Colors.blue[400],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 200,
-                        ),
-                      ],
+                    ProfileHeader(
+                      userName: "$userName",
+                      designation: "$designation",
+                      department: "$department",
                     ),
                     Column(
                       children: <Widget>[

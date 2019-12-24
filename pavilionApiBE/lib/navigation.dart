@@ -19,7 +19,7 @@ class NavigationPage extends StatefulWidget {
     DrawerItem('Attendance', Icons.calendar_today),
     DrawerItem('Catering', Icons.restaurant_menu),
     DrawerItem('Leave Management', Icons.directions_walk),
-    DrawerItem('Reinbursment', Icons.library_add),
+    DrawerItem('Reimbursment', Icons.library_add),
     DrawerItem('Notification', Icons.notifications_active), 
   ];
   

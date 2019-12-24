@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pavilion/customWidget/customText.dart';
 import 'package:pavilion/customWidget/loadingPage.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:pavilion/customWidget/secondaryHeader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:pavilion/api/global.dart';
@@ -121,50 +121,9 @@ class _CateringState extends State<Catering> {
       home: Scaffold(
         body: Column(
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colors.green[700],
-                    Colors.green[400],
-                  ],
-                ),
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(15),
-                  bottomLeft: Radius.circular(15),
-                ),
-              ),
-              height: 50.0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.only(left: 20.0),
-                    child: CustomText(
-                      inputText: "Catering List",
-                      textColor: Colors.white,
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 100.0),
-                    child: FlatButton(
-                      onPressed: cateringList,
-                      child: Center(
-                        child: Icon(
-                          Icons.refresh,
-                          color: Colors.white,
-                        ),
-                        // Text(
-                        //   'Search',
-                        //   style: TextStyle(color: Colors.white, fontSize: 20),
-                        // ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            SecondaryHeader(
+              headerName: "Catering List",
+              onPressed: cateringList,
             ),
             Expanded(
               child: isLoading
