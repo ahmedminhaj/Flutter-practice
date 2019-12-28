@@ -124,7 +124,9 @@ class _ProfileState extends State<Profile> {
         backgroundColor: Colors.green[700],
         title: Text("Profile"),
       ),
-      body: isLoading ? LoadingPage() : SingleChildScrollView(
+      body:
+      //  isLoading ? LoadingPage() : 
+       SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Slidable(

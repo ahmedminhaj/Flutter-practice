@@ -76,19 +76,19 @@ class _OvertimeState extends State<Overtime> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Column(
-          children: <Widget>[
-            SecondaryHeader(
-              headerName: "Overtime List",
-              onPressed: overtimeList,
-            ),
-            Expanded(
-              child: isLoading
-                  ? LoadingPage()
-                  : ListView.builder(
+    return isLoading
+        ? LoadingPage()
+        : MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: Scaffold(
+              body: Column(
+                children: <Widget>[
+                  SecondaryHeader(
+                    headerName: "Overtime List",
+                    onPressed: overtimeList,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
                       itemCount: userData == null ? 0 : userData.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
@@ -135,17 +135,17 @@ class _OvertimeState extends State<Overtime> {
                         );
                       },
                     ),
+                  ),
+                ],
+              ),
+              floatingActionButton: FloatingActionButton(
+                backgroundColor: Colors.green[700],
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/riseOvertime');
+                },
+                child: Icon(Icons.add),
+              ),
             ),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.green[700],
-          onPressed: () {
-            Navigator.of(context).pushNamed('/riseOvertime');
-          },
-          child: Icon(Icons.add),
-        ),
-      ),
-    );
+          );
   }
 }

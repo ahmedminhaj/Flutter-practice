@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pavilion/drawerWidget/drawer.dart';
 
 class Reimbursment extends StatefulWidget {
   @override
@@ -9,6 +10,10 @@ class _ReimbursmentState extends State<Reimbursment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Reimbursment"),
+      ),
+      drawer: AppDrawer(),
       body: Center(
         child: Text(
           'under construction',

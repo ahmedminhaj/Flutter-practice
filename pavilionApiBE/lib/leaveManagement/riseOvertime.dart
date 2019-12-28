@@ -62,7 +62,7 @@ class _RiseOvertimeState extends State<RiseOvertime> {
             showToast(responseBody['message']);
             //Navigator.of(context).PushNamed('/catering');
             isLoading = false;
-            Navigator.popAndPushNamed(context, '/navigationPage');
+            Navigator.popAndPushNamed(context, '/leaveMangement');
           } else {
             if (responseBody['message'] == tokenDatabaseCheck ||
                 responseBody['message'] == tokenTimeCheck) {

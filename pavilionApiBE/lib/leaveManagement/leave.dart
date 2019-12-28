@@ -80,17 +80,17 @@ class _LeaveState extends State<Leave> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Column(
-          children: <Widget>[
-            SecondaryHeader(
-              headerName: "Leave List",
-              onPressed: leaveList,
-            ),
-            Expanded(
-              child: isLoading
-                  ? LoadingPage()
-                  : ListView.builder(
+      home: isLoading
+          ? LoadingPage()
+          : Scaffold(
+              body: Column(
+                children: <Widget>[
+                  SecondaryHeader(
+                    headerName: "Leave List",
+                    onPressed: leaveList,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
                       itemCount: userData == null ? 0 : userData.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
@@ -137,17 +137,17 @@ class _LeaveState extends State<Leave> {
                         );
                       },
                     ),
+                  ),
+                ],
+              ),
+              floatingActionButton: FloatingActionButton(
+                backgroundColor: Colors.green[700],
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/takeLeave');
+                },
+                child: Icon(Icons.add_box),
+              ),
             ),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.green[700],
-          onPressed: () {
-            Navigator.of(context).pushNamed('/takeLeave');
-          },
-          child: Icon(Icons.add_box),
-        ),
-      ),
     );
   }
 }

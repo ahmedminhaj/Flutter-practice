@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pavilion/drawerWidget/drawer.dart';
 import 'leave.dart' as leave;
 import 'overtime.dart' as overtime;
 
@@ -26,27 +27,33 @@ class _LeaveManagementState extends State<LeaveManagement>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TabBar(
-        labelColor: Colors.green[700],
-        controller: controller,
-        indicatorWeight: 5.0,
-        indicatorPadding: EdgeInsets.all(5.0),
-        indicatorColor: Colors.green,
-        tabs: <Widget>[
-          Tab(
-            child: Text(
-              "Leave",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+      appBar: 
+      AppBar(
+        title: Text("Leave Management"),
+        bottom: TabBar(
+              labelColor: Colors.green[700],
+              controller: controller,
+              indicatorWeight: 5.0,
+              indicatorPadding: EdgeInsets.all(5.0),
+              indicatorColor: Colors.green,
+              tabs: <Widget>[
+                Tab(
+                  child: Text(
+                    "Leave",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: Colors.white),
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    "Overtime",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: Colors.white),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Tab(
-            child: Text(
-              "Overtime",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
-            ),
-          ),
-        ],
       ),
+      
+      drawer: AppDrawer(),
       body: TabBarView(
         controller: controller,
         children: <Widget>[

@@ -68,7 +68,7 @@ class _MealOrderState extends State<MealOrder> {
             setState(() {
               isLoading = false;
             });
-            Navigator.popAndPushNamed(context, '/navigationPage');
+            Navigator.popAndPushNamed(context, '/catering');
           } else {
             if (responseBody['message'] == tokenDatabaseCheck ||
                 responseBody['message'] == tokenTimeCheck) {
@@ -97,10 +97,10 @@ class _MealOrderState extends State<MealOrder> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: isLoading
-          ? LoadingPage()
-          : SingleChildScrollView(
+    return isLoading
+        ? LoadingPage()
+        : Scaffold(
+            body: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
                   HeaderContainer(
@@ -211,6 +211,6 @@ class _MealOrderState extends State<MealOrder> {
                 ],
               ),
             ),
-    );
+          );
   }
 }

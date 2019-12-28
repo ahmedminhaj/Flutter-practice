@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pavilion/customWidget/customText.dart';
 import 'package:pavilion/customWidget/homePageButton.dart';
 import 'package:pavilion/customWidget/loadingPage.dart';
+import 'package:pavilion/drawerWidget/drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pavilion/api/global.dart';
 
@@ -161,10 +162,14 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat("EEEEEEEEEEE,  d MMMM y").format(now);
-    return Scaffold(
-      body: isLoading
-          ? LoadingPage()
-          : SingleChildScrollView(
+    return isLoading
+        ? LoadingPage()
+        : Scaffold(
+            appBar: AppBar(
+              title: Text("Home"),
+            ),
+            drawer: AppDrawer(),
+            body: SingleChildScrollView(
               child: Column(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -345,6 +350,6 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-    );
+          );
   }
 }

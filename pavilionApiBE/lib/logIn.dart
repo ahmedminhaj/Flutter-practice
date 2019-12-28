@@ -53,7 +53,7 @@ class _LogInPageState extends State<LogInPage> {
             // Navigate to homepage
             //Navigator.of(context).pushNamed('/navigationPage');
             Navigator.of(context).pushNamedAndRemoveUntil(
-                '/navigationPage', (Route<dynamic> route) => false);
+                '/home', (Route<dynamic> route) => false);
             setState(() {
               isLoading = false;
             });
