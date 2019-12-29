@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:pavilion/customWidget/customText.dart';
+import 'package:pavilion/customWidget/dialogBox.dart';
 import 'package:pavilion/customWidget/loadingPage.dart';
 import 'package:pavilion/customWidget/secondaryHeader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +28,10 @@ class _CateringState extends State<Catering> {
     cateringList();
   }
 
+  goBack(){
+    Navigator.of(context).pop();
+  }
+
   Future<void> cateringList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userID = prefs.getString('user_id');
@@ -48,10 +53,14 @@ class _CateringState extends State<Catering> {
             userData = data["data"];
             isLoading = false;
           });
+          print(userData);
         } else {
           //print('status false');
           //print(responseBody);
-
+          setState(() {
+            userData = null;
+          });
+          
           if (responseBody['message'] == tokenDatabaseCheck ||
               responseBody['message'] == tokenTimeCheck) {
             showToast(responseBody['message']);
@@ -59,6 +68,7 @@ class _CateringState extends State<Catering> {
                 '/logIn', (Route<dynamic> route) => false);
           } else {
             setState(() {
+
               isLoading = false;
             });
             showToast(responseBody['message']);
@@ -92,6 +102,7 @@ class _CateringState extends State<Catering> {
             cateringList();
           });
           showToast(responseBody['message']);
+          Navigator.of(context).pop();
         } else {
           //print('status false');
           //print(responseBody);
@@ -166,12 +177,9 @@ class _CateringState extends State<Catering> {
                                     String id = '${userData[index]["id"]}';
                                     String date = '${userData[index]["date"]}';
 
-                                    deleteMeal(id);
-                                    showCustomDialog(context, date);
-
-                                    setState(() {
-                                      isLoading = true;
-                                    });
+                                    //deleteMeal(id);
+                                    showCustomDialog(
+                                        context, deleteMeal, date, id, goBack);
                                   },
                                   child: Text(
                                     'Cancel',
@@ -205,66 +213,20 @@ class _CateringState extends State<Catering> {
   }
 }
 
-void showCustomDialog(BuildContext context, String dateRange ) {
+void showCustomDialog(
+    BuildContext context, Function mealDelete, String dateRange, String id, Function back) {
   Dialog simpleDialog = Dialog(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12.0),
     ),
-    child: Container(
-      height: 150.0,
-      width: 300.0,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              child: CustomText(
-                inputText: "Your meal order for $dateRange canceled",
-                align: TextAlign.center,
-              ),
-            ),
-          ),
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 10, right: 10, top: 50),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     crossAxisAlignment: CrossAxisAlignment.end,
-          //     children: <Widget>[
-          //       RaisedButton(
-          //         color: Colors.blue,
-          //         onPressed: mealDelete,
-          //         child: CustomText(
-          //           inputText: "Confirm",
-          //           textColor: Colors.white,
-          //         ),
-          //       ),
-          //       SizedBox(
-          //         width: 20,
-          //       ),
-          //       RaisedButton(
-          //         color: Colors.red,
-          //         onPressed: () {
-          //           Navigator.of(context).pop();
-          //         },
-          //         child: CustomText(
-          //           inputText: "Back",
-          //           textColor: Colors.white,
-          //         ),
-          //       )
-          //     ],
-          //   ),
-          // ),
-        ],
-      ),
+    child: DialogBox(
+      popUpText: "Cancel your meal order for $dateRange",
+      confirmAction: (){
+        mealDelete(id);
+      },
+      backAction: (){
+        back();
+      },
     ),
   );
   showDialog(context: context, builder: (BuildContext context) => simpleDialog);

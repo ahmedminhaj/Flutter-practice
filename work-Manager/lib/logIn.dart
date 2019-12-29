@@ -49,7 +49,7 @@ class _LogInPageState extends State<LogInPage> {
             prefs.setString('user_department', responseData['department']);
             prefs.setString('users_username', responseData['username']);
             prefs.setString('token', responseData['token']);
-            print(responseData);
+            //print(responseData);
             // Navigate to homepage
             //Navigator.of(context).pushNamed('/navigationPage');
             Navigator.of(context).pushNamedAndRemoveUntil(

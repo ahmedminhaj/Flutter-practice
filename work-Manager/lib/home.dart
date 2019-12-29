@@ -73,7 +73,7 @@ class _HomeState extends State<Home> {
             exit = responseData['exit_time'] ?? "0";
             isLoading = false;
           });
-          print(responseBody);
+          //print(responseBody);
         } else {
           if (responseBody['message'] == tokenDatabaseCheck ||
               responseBody['message'] == tokenTimeCheck) {

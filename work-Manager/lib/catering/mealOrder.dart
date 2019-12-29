@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pavilion/customWidget/commentBox.dart';
-import 'package:pavilion/customWidget/customText.dart';
 import 'package:pavilion/customWidget/dateRangeBox.dart';
+import 'package:pavilion/customWidget/dialogBox.dart';
 import 'package:pavilion/customWidget/headerContainer.dart';
-import 'package:pavilion/customWidget/homePageButton.dart';
 import 'package:pavilion/customWidget/loadingPage.dart';
 import 'package:pavilion/customWidget/submitButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,6 +37,11 @@ class _MealOrderState extends State<MealOrder> {
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
   String get comment => _commentController.text;
+
+  goBack(){
+    Navigator.of(context).pop();
+    isLoading = false;
+  }
 
   Future<void> mealOrder() async {
     if (dateRange != null) {
@@ -197,10 +201,10 @@ class _MealOrderState extends State<MealOrder> {
                         ),
                         SubmitButton(
                                 onPressed: () {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  showCustomDialog(context, mealOrder, showDate);
+                                  // setState(() {
+                                  //   isLoading = true;
+                                  // });
+                                  showCustomDialog(context, mealOrder, showDate, goBack);
                                 },
                                 buttonTitle: "Order Now",
                               ),
@@ -218,66 +222,19 @@ class _MealOrderState extends State<MealOrder> {
 }
 
 void showCustomDialog(
-    BuildContext context, Function onPressed, String dateRange) {
+    BuildContext context, Function onPressed, String dateRange, Function back) {
   Dialog simpleDialog = Dialog(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12.0),
     ),
-    child: Container(
-      height: 250.0,
-      width: 300.0,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              child: CustomText(
-                inputText: "Your meal order for $dateRange",
-                align: TextAlign.center,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 50),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                RaisedButton(
-                  color: Colors.blue,
-                  onPressed: onPressed,
-                  child: CustomText(
-                    inputText: "Confirm",
-                    textColor: Colors.white,
-                  ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                RaisedButton(
-                  color: Colors.red,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: CustomText(
-                    inputText: "Cancel",
-                    textColor: Colors.white,
-                  ),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
+    child: DialogBox(
+      popUpText: "Confirm your meal order for $dateRange",
+      confirmAction: (){
+        onPressed();
+      },
+      backAction: (){
+        back();
+      },
     ),
   );
   showDialog(context: context, builder: (BuildContext context) => simpleDialog);
