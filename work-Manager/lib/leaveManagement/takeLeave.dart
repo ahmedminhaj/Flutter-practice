@@ -7,7 +7,6 @@ import 'package:pavilion/customWidget/customText.dart';
 import 'package:pavilion/customWidget/dateRangeBox.dart';
 import 'package:pavilion/customWidget/dialogBox.dart';
 import 'package:pavilion/customWidget/headerContainer.dart';
-import 'package:pavilion/customWidget/homePageButton.dart';
 import 'package:pavilion/customWidget/labelText.dart';
 import 'package:pavilion/customWidget/submitButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,7 +25,7 @@ class _TakeLeaveState extends State<TakeLeave> {
   static final TextEditingController _commentController =
       TextEditingController();
   String inputDate = ' ', startDate, endDate;
-  String leaveType = '';
+  String leaveType;
   DateTime currentDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   DateTime datetemp, startDateT, endDateT;
@@ -37,18 +36,53 @@ class _TakeLeaveState extends State<TakeLeave> {
   List userData;
   bool isLoading = false;
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-  List<String> leaveCategory = [
-    'Casual Leave',
-    'Anual Leave',
-    'Medical Leave',
-  ];
+  //List leaveCategory;
+  //List<int> categoryID;
+  List categoryData = List();
   String selectLeaveCategory;
 
   String get comment => _commentController.text;
 
-  goBack(){
+  @override
+  void initState() {
+    getCategory();
+    super.initState();
+  }
+
+  goBack() {
     Navigator.of(context).pop();
     isLoading = false;
+  }
+
+  getCategory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userID = prefs.getString('user_id');
+
+    Map input = {'user_id': userID, 'type': "1"};
+    try {
+      var url = '$base_url/leave/leave_category';
+
+      var response = await http.post(url, body: input);
+      if (response.statusCode == 200) {
+        var responseBody = jsonDecode(response.body);
+
+        if (responseBody['status']) {
+          var responseData = responseBody['data'];
+          print(responseData);
+          // print(responseData.length);
+
+          setState(() {
+            categoryData = responseData;
+          });
+        } else {
+          print(responseBody['status']);
+        }
+      } else {
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> takeLeave() async {
@@ -65,8 +99,10 @@ class _TakeLeaveState extends State<TakeLeave> {
         'date': dateString,
         'type': '1',
         'comment': comment,
+        'leave_day_type': leaveType,
+        'leave_category': selectLeaveCategory,
       };
-
+      print(input);
       try {
         var url = '$base_url/leave/user_leave_create';
         var response = await http.post(url,
@@ -102,7 +138,7 @@ class _TakeLeaveState extends State<TakeLeave> {
       }
       print(input);
     } else {
-      showToast("Need a date to order meal");
+      showToast("Need a date to take leave");
     }
   }
 
@@ -192,11 +228,8 @@ class _TakeLeaveState extends State<TakeLeave> {
                     padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5.0)
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     ),
-                    
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -207,7 +240,7 @@ class _TakeLeaveState extends State<TakeLeave> {
                           children: <Widget>[
                             Radio(
                               groupValue: leaveType,
-                              value: '0.5',
+                              value: '2',
                               onChanged: (val) {
                                 setState(() {
                                   leaveType = val;
@@ -219,7 +252,7 @@ class _TakeLeaveState extends State<TakeLeave> {
                             ),
                             Radio(
                               groupValue: leaveType,
-                              value: '1.0',
+                              value: '1',
                               onChanged: (val) {
                                 setState(() {
                                   leaveType = val;
@@ -249,12 +282,12 @@ class _TakeLeaveState extends State<TakeLeave> {
                                   selectLeaveCategory = inputValue;
                                 });
                               },
-                              items: leaveCategory.map((category) {
+                              items: categoryData.map((category) {
                                 return DropdownMenuItem(
                                   child: CustomText(
-                                    inputText: category,
+                                    inputText: category['category_name'],
                                   ),
-                                  value: category,
+                                  value: category['id'].toString(),
                                 );
                               }).toList(),
                             ),
@@ -303,10 +336,10 @@ void showCustomDialog(
     ),
     child: DialogBox(
       popUpText: "Leave request for $dateRange",
-      confirmAction: (){
+      confirmAction: () {
         onPressed();
       },
-      backAction: (){
+      backAction: () {
         back();
       },
     ),

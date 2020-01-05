@@ -76,9 +76,11 @@ class _OvertimeState extends State<Overtime> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return 
+    // MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   home: 
+      Scaffold(
         body: Column(
           children: <Widget>[
             SecondaryHeader(
@@ -145,7 +147,7 @@ class _OvertimeState extends State<Overtime> {
           },
           child: Icon(Icons.add),
         ),
-      ),
+      // ),
     );
   }
 }

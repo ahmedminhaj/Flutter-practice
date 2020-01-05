@@ -52,6 +52,7 @@ class _LogInPageState extends State<LogInPage> {
             //print(responseData);
             // Navigate to homepage
             //Navigator.of(context).pushNamed('/navigationPage');
+            showToast(responseBody['message']);
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/navigationPage', (Route<dynamic> route) => false);
             setState(() {

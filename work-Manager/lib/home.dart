@@ -32,6 +32,8 @@ class _HomeState extends State<Home> {
   String meal = "";
   String entry = "";
   String exit = "";
+  double remainingLeave = 0.0;
+  String leaveRemain = "";
   // String entryMsg = "Please tap the 'Entry Time' button.";
   // String exitMsg = "Tap the 'Exit Time' button before leave the office.";
 
@@ -65,15 +67,17 @@ class _HomeState extends State<Home> {
         var responseBody = jsonDecode(response.body);
         if (responseBody['status']) {
           var responseData = responseBody['data'];
-          //print(responseData);
+          print(responseData);
           setState(() {
             email = responseData['email'];
             meal = responseData['meal'] != null ? "Placed" : "Not Placed";
             entry = responseData['entry_time'] ?? "0";
             exit = responseData['exit_time'] ?? "0";
+            remainingLeave = responseData['remaining_leave'].toDouble() ;
+            leaveRemain = responseData['remaining_leave'].abs().toString();
             isLoading = false;
           });
-          //print(responseBody);
+          print(responseBody);
         } else {
           if (responseBody['message'] == tokenDatabaseCheck ||
               responseBody['message'] == tokenTimeCheck) {
@@ -337,7 +341,37 @@ class _HomeState extends State<Home> {
                                 ),
                         ),
                         SizedBox(
-                          height: 30.0,
+                          height: 20.0,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5),
+                            ),
+                          ),
+                          child: remainingLeave <= -1 ? CustomText(
+                                  inputText:
+                                      "Annual Leave $leaveRemain days excited",
+                                  textColor: Colors.red[500],
+                                  align: TextAlign.center,
+                                )
+                           : remainingLeave <= 1 ? CustomText(
+                                  inputText:
+                                      "Annual Leave $leaveRemain day remaining",
+                                  textColor: Colors.black,
+                                  align: TextAlign.center,
+                                ) : CustomText(
+                                  inputText:
+                                      "Annual Leave $leaveRemain days remaining",
+                                  textColor: Colors.black,
+                                  align: TextAlign.center,
+                                ),
+                        ),
+                        SizedBox(
+                          height: 10.0,
                         ),
                       ],
                     ),

@@ -14,7 +14,7 @@ class _LeaveManagementState extends State<LeaveManagement>
 
   @override
   void initState() {
-    controller = TabController(length: 3, vsync: this);
+    controller = TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -46,12 +46,12 @@ class _LeaveManagementState extends State<LeaveManagement>
               style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
             ),
           ),
-          Tab(
-            child: Text(
-              "Official Leave",
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-            ),
-          ),
+          // Tab(
+          //   child: Text(
+          //     "Official Leave",
+          //     style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+          //   ),
+          // ),
         ],
       ),
       body: TabBarView(
@@ -59,7 +59,7 @@ class _LeaveManagementState extends State<LeaveManagement>
         children: <Widget>[
           leave.Leave(),
           overtime.Overtime(),
-          officialLeave.OfficialLeave(),
+          //officialLeave.OfficialLeave(),
         ],
       ),
     );

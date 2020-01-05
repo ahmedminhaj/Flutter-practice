@@ -7,7 +7,6 @@ import 'package:pavilion/customWidget/customText.dart';
 import 'package:pavilion/customWidget/dateRangeBox.dart';
 import 'package:pavilion/customWidget/dialogBox.dart';
 import 'package:pavilion/customWidget/headerContainer.dart';
-import 'package:pavilion/customWidget/homePageButton.dart';
 import 'package:pavilion/customWidget/labelText.dart';
 import 'package:pavilion/customWidget/submitButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,21 +25,60 @@ class _RiseOvertimeState extends State<RiseOvertime> {
       TextEditingController();
   String inputDate;
   String overtimeType;
+  String selectOvertimeCategory;
   DateTime currentDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   DateTime datetemp;
   String userID;
   Map data;
   List userData;
+  List categoryData = List();
   var token;
   bool isLoading = false;
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
   String get comment => _commentController.text;
 
+   @override
+  void initState() {
+    getCategory();
+    super.initState();
+  }
+
   goBack(){
     isLoading = false;
     Navigator.of(context).pop();
+  }
+
+  getCategory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userID = prefs.getString('user_id');
+
+    Map input = {'user_id': userID, 'type': "2"};
+    try {
+      var url = '$base_url/leave/leave_category';
+
+      var response = await http.post(url, body: input);
+      if (response.statusCode == 200) {
+        var responseBody = jsonDecode(response.body);
+
+        if (responseBody['status']) {
+          var responseData = responseBody['data'];
+          print(responseData);
+          // print(responseData.length);
+          
+          setState(() {
+            categoryData = responseData;
+          });
+        } else {
+          print(responseBody['status']);
+        }
+      } else {
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> riseOvertime() async {
@@ -54,6 +92,8 @@ class _RiseOvertimeState extends State<RiseOvertime> {
         'type': "2",
         'date': inputDate,
         'comment': comment,
+        'leave_day_type': overtimeType,
+        'leave_category': selectOvertimeCategory,
       };
 
       try {
@@ -153,7 +193,7 @@ class _RiseOvertimeState extends State<RiseOvertime> {
                           children: <Widget>[
                             Radio(
                               groupValue: overtimeType,
-                              value: '0.5',
+                              value: '2',
                               onChanged: (val) {
                                 setState(() {
                                   overtimeType = val;
@@ -165,7 +205,7 @@ class _RiseOvertimeState extends State<RiseOvertime> {
                             ),
                             Radio(
                               groupValue: overtimeType,
-                              value: '1.0',
+                              value: '1',
                               onChanged: (val) {
                                 setState(() {
                                   overtimeType = val;
@@ -177,6 +217,35 @@ class _RiseOvertimeState extends State<RiseOvertime> {
                             )
                           ],
                         ),
+                        Row(
+                          children: <Widget>[
+                            LabelText(
+                              inputText: "Category:",
+                            ),
+                            SizedBox(
+                              width: 8.0,
+                            ),
+                            DropdownButton(
+                              hint: CustomText(
+                                inputText: "Select Category",
+                              ),
+                              value: selectOvertimeCategory,
+                              onChanged: (inputValue) {
+                                setState(() {
+                                  selectOvertimeCategory = inputValue;
+                                });
+                              },
+                              items: categoryData.map((category) {
+                                return DropdownMenuItem(
+                                  child: CustomText(
+                                    inputText: category['category_name'],
+                                  ),
+                                  value: category['id'].toString(),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
