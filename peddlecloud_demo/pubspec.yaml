@@ -1,0 +1,45 @@
+name: peddlecloud
+description: A new Flutter project.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+  responsive_builder: ^0.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  
+  
+
+# following page: https://dart.dev/tools/pub/pubspec
+
+flutter:
+  uses-material-design: true
+
+  assets:
+   - assets/image/logo.png
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/font/poppins/Poppins-Bold.ttf
+        - asset: assets/font/poppins/Poppins-Regular.ttf
+        - asset: assets/font/poppins/Poppins-Medium.ttf
+          weight: 700
+
+    - family: OpenSans
+      fonts:
+        - asset: assets/font/open sans/OpenSans-Bold.ttf
+        - asset: assets/font/open sans/OpenSans-Semibold.ttf
+        - asset: assets/font/open sans/OpenSans-Regular.ttf
+          weight: 800
+  
+ 
