@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pavilion/customWidget/customText.dart';
+import 'package:HajiraKhata/customWidget/customText.dart';
 
 class SecondaryHeader extends StatelessWidget {
   final String headerName;

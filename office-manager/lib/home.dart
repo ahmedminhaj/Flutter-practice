@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pavilion/customWidget/customText.dart';
-import 'package:pavilion/customWidget/homePageButton.dart';
-import 'package:pavilion/customWidget/loadingPage.dart';
+import 'package:HajiraKhata/customWidget/customText.dart';
+import 'package:HajiraKhata/customWidget/homePageButton.dart';
+import 'package:HajiraKhata/customWidget/loadingPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:pavilion/api/global.dart';
+import 'package:HajiraKhata/api/global.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -352,7 +352,7 @@ class _HomeState extends State<Home> {
                               Radius.circular(5),
                             ),
                           ),
-                          child: remainingLeave <= -1 ? CustomText(
+                          child: remainingLeave < 0 ? CustomText(
                                   inputText:
                                       "Annual Leave $leaveRemain days excited",
                                   textColor: Colors.red[500],

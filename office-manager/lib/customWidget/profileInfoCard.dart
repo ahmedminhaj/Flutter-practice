@@ -13,10 +13,10 @@ class ProfileInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 70.0,
+      //height: 70.0,
       child: Card(
         child: Container(
-          padding: EdgeInsets.only(left: 20),
+          padding: EdgeInsets.all(10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,12 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:pavilion/customWidget/profileHeader.dart';
-import 'package:pavilion/customWidget/resetFormField.dart';
-import 'package:pavilion/customWidget/submitButton.dart';
+import 'package:HajiraKhata/customWidget/profileHeader.dart';
+import 'package:HajiraKhata/customWidget/submitButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:pavilion/api/global.dart';
+import 'package:HajiraKhata/api/global.dart';
 import 'dart:convert';
 
 class ResetPassword extends StatefulWidget {
@@ -17,7 +16,7 @@ class ResetPassword extends StatefulWidget {
 class _ResetPasswordState extends State<ResetPassword> {
   final formKey = GlobalKey<FormState>();
   bool passwordVisible;
-  String _newPass, _confirmPass, _oldPass, tempPass;
+  String newPass, confirmPass, oldPass;
 
   String userID = "";
   String userName, userDesignation, userDepartment;
@@ -44,10 +43,12 @@ class _ResetPasswordState extends State<ResetPassword> {
       token = prefs.getString('token') ?? '';
       Map inputPass = {
         'user_id': userID,
-        'oldpassword': _oldPass,
-        'newpassword': _newPass,
-        'confirmnewpassword': _confirmPass,
+        'oldpassword': oldPass,
+        'newpassword': newPass,
+        'confirmnewpassword': confirmPass,
       };
+
+      print(inputPass);
 
       try {
         var url = '$base_url/user/change_password';
@@ -84,7 +85,7 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   @override
   void initState() {
-    passwordVisible = false;
+    passwordVisible = true;
     profileInfo();
     super.initState();
   }
@@ -110,29 +111,97 @@ class _ResetPasswordState extends State<ResetPassword> {
                 padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 0.0),
                 child: Column(
                   children: <Widget>[
-                    ResetFormField(
-                      labeltext: "Previous Password",
-                      inputPass: _oldPass,
-                      passwordVisible: passwordVisible,
-                      validation: (input) => input.length < 5
+                    TextFormField(
+                      onSaved: (val) => oldPass = val,
+                      obscureText: passwordVisible,
+                      decoration: InputDecoration(
+                        labelText: "Previous Password",
+                        labelStyle: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.green),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            passwordVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.green,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (input) => input.length < 5
                           ? 'Password must be more then 5 characters'
                           : null,
                     ),
-                    ResetFormField(
-                      labeltext: "New Password",
-                      inputPass: _newPass,
-                      passwordVisible: passwordVisible,
-                      validation: (input) => input.length < 5
+                    TextFormField(
+                      onSaved: (val) => newPass = val,
+                      obscureText: passwordVisible,
+                      decoration: InputDecoration(
+                        labelText: "New Password",
+                        labelStyle: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.green),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            passwordVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.green,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (input) => input.length < 5
                           ? 'Password must be more then 5 characters'
                           : null,
                     ),
-                    ResetFormField(
-                      labeltext: "Confirm Password",
-                      inputPass: _confirmPass,
-                      passwordVisible: passwordVisible,
-                      validation: (input) => input == _newPass
-                          ? "new password didn't match"
-                          : null,
+                    TextFormField(
+                      onSaved: (val) => confirmPass = val,
+                      obscureText: passwordVisible,
+                      decoration: InputDecoration(
+                        labelText: "Previous Password",
+                        labelStyle: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.green),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            passwordVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.green,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (input) =>
+                          input == newPass ? "new password didn't match" : null,
                     ),
                     SizedBox(
                       height: 15.0,

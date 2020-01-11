@@ -2,16 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:pavilion/customWidget/commentBox.dart';
-import 'package:pavilion/customWidget/customText.dart';
-import 'package:pavilion/customWidget/dateRangeBox.dart';
-import 'package:pavilion/customWidget/dialogBox.dart';
-import 'package:pavilion/customWidget/headerContainer.dart';
-import 'package:pavilion/customWidget/labelText.dart';
-import 'package:pavilion/customWidget/submitButton.dart';
+import 'package:HajiraKhata/customWidget/commentBox.dart';
+import 'package:HajiraKhata/customWidget/customText.dart';
+import 'package:HajiraKhata/customWidget/dateRangeBox.dart';
+import 'package:HajiraKhata/customWidget/dialogBox.dart';
+import 'package:HajiraKhata/customWidget/headerContainer.dart';
+import 'package:HajiraKhata/customWidget/labelText.dart';
+import 'package:HajiraKhata/customWidget/submitButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:pavilion/api/global.dart';
+import 'package:HajiraKhata/api/global.dart';
 import 'dart:convert';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:intl/intl.dart';
@@ -248,7 +248,7 @@ class _TakeLeaveState extends State<TakeLeave> {
                               },
                             ),
                             CustomText(
-                              inputText: "Half Leave",
+                              inputText: "Half Day",
                             ),
                             Radio(
                               groupValue: leaveType,
@@ -260,7 +260,7 @@ class _TakeLeaveState extends State<TakeLeave> {
                               },
                             ),
                             CustomText(
-                              inputText: "Full Leave",
+                              inputText: "Full Day",
                             )
                           ],
                         ),

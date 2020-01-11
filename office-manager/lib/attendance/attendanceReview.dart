@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:pavilion/customWidget/commentBox.dart';
-import 'package:pavilion/customWidget/headerContainer.dart';
-import 'package:pavilion/customWidget/submitButton.dart';
+import 'package:HajiraKhata/customWidget/commentBox.dart';
+import 'package:HajiraKhata/customWidget/headerContainer.dart';
+import 'package:HajiraKhata/customWidget/submitButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:pavilion/api/global.dart';
+import 'package:HajiraKhata/api/global.dart';
 
 class AttendanceReview extends StatefulWidget {
   @override

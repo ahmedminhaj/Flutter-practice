@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:pavilion/customWidget/customText.dart';
-import 'package:pavilion/customWidget/loadingPage.dart';
-import 'package:pavilion/customWidget/reviewButton.dart';
-import 'package:pavilion/customWidget/secondaryHeader.dart';
+import 'package:HajiraKhata/customWidget/customText.dart';
+import 'package:HajiraKhata/customWidget/loadingPage.dart';
+import 'package:HajiraKhata/customWidget/reviewButton.dart';
+import 'package:HajiraKhata/customWidget/secondaryHeader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:pavilion/api/global.dart';
+import 'package:HajiraKhata/api/global.dart';
 import 'dart:convert';
 
 class Attendance extends StatefulWidget {

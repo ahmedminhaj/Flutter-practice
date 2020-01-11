@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:pavilion/attendance/attendanceReview.dart';
-import 'package:pavilion/leaveManagement/riseOvertime.dart';
-import 'package:pavilion/leaveManagement/takeLeave.dart';
-import 'package:pavilion/navigation.dart';
-import 'package:pavilion/profile/Profile.dart';
-import 'package:pavilion/catering/catering.dart';
-import 'package:pavilion/profile/editProfile.dart';
-import 'package:pavilion/catering/mealOrder.dart';
-import 'package:pavilion/profile/resetPassword.dart';
+import 'package:HajiraKhata/attendance/attendanceReview.dart';
+import 'package:HajiraKhata/leaveManagement/riseOvertime.dart';
+import 'package:HajiraKhata/leaveManagement/takeLeave.dart';
+import 'package:HajiraKhata/navigation.dart';
+import 'package:HajiraKhata/passRecovery.dart';
+import 'package:HajiraKhata/profile/Profile.dart';
+import 'package:HajiraKhata/catering/catering.dart';
+import 'package:HajiraKhata/profile/editProfile.dart';
+import 'package:HajiraKhata/catering/mealOrder.dart';
+import 'package:HajiraKhata/profile/resetPassword.dart';
 import 'logIn.dart';
-import 'signUp.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
-        '/signUp': (BuildContext context) => SignupPage(),
+        '/recoveryPass': (BuildContext context) => RecoveryPass(),
         '/logIn': (BuildContext context) => LogInPage(),
         '/navigationPage': (BuildContext context) => NavigationPage(),
         '/mealOrder': (BuildContext context) => MealOrder(),

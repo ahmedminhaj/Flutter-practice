@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:pavilion/customWidget/editProfileCard.dart';
-import 'package:pavilion/customWidget/profileHeader.dart';
-import 'package:pavilion/customWidget/submitButton.dart';
+import 'package:HajiraKhata/customWidget/editProfileCard.dart';
+import 'package:HajiraKhata/customWidget/profileHeader.dart';
+import 'package:HajiraKhata/customWidget/submitButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:pavilion/api/global.dart';
+import 'package:HajiraKhata/api/global.dart';
 import 'dart:convert';
 
 class EditProfile extends StatefulWidget {
@@ -142,7 +142,7 @@ class _EditProfileState extends State<EditProfile> {
                 child: Column(
                   children: <Widget>[
                     ProfileHeader(
-                      userName: "$userName",
+                      userName: "$name",
                       designation: "$designation",
                       department: "$department",
                     ),
@@ -174,11 +174,11 @@ class _EditProfileState extends State<EditProfile> {
                           onSave: (input) => userRelation = input,
                         ),
                         DropdownButton(
-                          hint: Text("Please choose your blood group"),
-                          //value: bloodGroup,
-                          value: selectBloodGroup == null
-                              ? bloodGroup
-                              : selectBloodGroup,
+                          hint:  Text( bloodGroup == null ? "Please choose your blood group" : bloodGroup) ,
+                          value: selectBloodGroup,
+                          // value: selectBloodGroup == null
+                          //     ? bloodGroup
+                          //     : selectBloodGroup,
                           onChanged: (inputValue) {
                             setState(() {
                               selectBloodGroup = inputValue;

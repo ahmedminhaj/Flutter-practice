@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pavilion/attendance/attendance.dart';
-import 'package:pavilion/catering/catering.dart';
-import 'package:pavilion/home.dart';
-import 'package:pavilion/leaveManagement/leaveManagement.dart';
-import 'package:pavilion/noticeMail.dart';
-import 'package:pavilion/reimbursment.dart';
+import 'package:HajiraKhata/attendance/attendance.dart';
+import 'package:HajiraKhata/catering/catering.dart';
+import 'package:HajiraKhata/home.dart';
+import 'package:HajiraKhata/leaveManagement/leaveManagement.dart';
+import 'package:HajiraKhata/noticeMail.dart';
+import 'package:HajiraKhata/reimbursment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerItem {
@@ -20,9 +20,9 @@ class NavigationPage extends StatefulWidget {
     DrawerItem('Catering', Icons.restaurant_menu),
     DrawerItem('Leave Management', Icons.directions_walk),
     DrawerItem('Reimbursment', Icons.library_add),
-    DrawerItem('Notification', Icons.notifications_active), 
+    DrawerItem('Official Notice', Icons.notifications_active),
   ];
-  
+
   @override
   _NavigationPageState createState() => _NavigationPageState();
 }
@@ -43,7 +43,7 @@ class _NavigationPageState extends State<NavigationPage> {
       case 4:
         return Reimbursment();
       case 5:
-        return NoticeMail();  
+        return NoticeMail();
       default:
         return Text('Error');
     }
@@ -59,6 +59,7 @@ class _NavigationPageState extends State<NavigationPage> {
     getUserName();
     super.initState();
   }
+
   String userName = '';
   String userID = '';
   getUserName() async {
@@ -112,8 +113,9 @@ class _NavigationPageState extends State<NavigationPage> {
                   SizedBox(
                     height: 10.0,
                   ),
+                  Text("v0.01.10", style: TextStyle(color: Colors.white),),
                   Text(
-                    "teamPavilion",
+                    "hajiraKhata",
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Poppins',
@@ -133,7 +135,6 @@ class _NavigationPageState extends State<NavigationPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      
                       Navigator.of(context).pushNamed('/profile');
                     },
                     child: Text(

@@ -2,11 +2,11 @@ import 'dart:io';
 import 'package:animator/animator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:pavilion/customWidget/loadingPage.dart';
-import 'package:pavilion/customWidget/profileInfoCard.dart';
+import 'package:HajiraKhata/customWidget/loadingPage.dart';
+import 'package:HajiraKhata/customWidget/profileInfoCard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:pavilion/api/global.dart';
+import 'package:HajiraKhata/api/global.dart';
 import 'dart:convert';
 
 class Profile extends StatefulWidget {
